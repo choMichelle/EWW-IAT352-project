@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+}
+
+.nav-bar {
+    display: flex;
+    background-color: lightgrey;
+    padding: 0.5rem;
+}
+
+.nav-bar a {
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+.nav-button {
+    padding: 0.5rem;
+    border-radius: 5px;
+}
