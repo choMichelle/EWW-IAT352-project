@@ -1,9 +1,9 @@
 <?php
-//TODO - replace values with our db
-// $dbhost = "localhost";
-// $dbuser = "root";
-// $dbpass = "";
-// $dbname = "classicmodels";
+//TODO - consider creating a user account instead of using root (if needed)
+$dbhost = "localhost";
+$dbuser = "root";
+$dbpass = "";
+$dbname = "eww_projectdb";
 
 //connect to the db
 @$db = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
