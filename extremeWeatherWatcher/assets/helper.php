@@ -33,4 +33,12 @@ function makeTextEntry($type, $label, $text, $varname) {
     
     echo " />";
 }
+
+function addListItem($item) {
+    echo "<a href=\"eventdetail.php?eventID=$item\" class=\"list-anchor\"><div class=\"models-list-item\">$item</div></a>";
+}
+
+
+
+
 ?>
