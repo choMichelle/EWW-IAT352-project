@@ -76,11 +76,11 @@ mysqli_free_result($result);
             <div><?php echo "Event location: $eventLocationID"?></div>
             <div>
                     <?php
-                    if ((!isset($_SESSION['email']))
-                    || ((isset($_SESSION['email'])) && !isInWatchlist($prodName))){
-                        echo "<form action=\"addtowatchlist.php\" method=\"post\">";
-                        echo "<input type = \"hidden\" name=\"newWatchListProdName\" value=\"$prodName\">";
-                        echo "<input type=\"submit\" name=\Add Location to Watchlist\ value=\"Add To Watchlist\">";
+                    if ((!isset($_SESSION['userEmail']))
+                    || ((isset($_SESSION['userEmail'])) && !isInWatchlist($eventLocationID))){
+                        echo "<form action=\"addcountrytowatchlist.php\" method=\"post\">";
+                        echo "<input type = \"hidden\" name=\"newWatchListCountryName\" value=\"$eventLocationID\">";
+                        echo "<input type=\"submit\" name=\Add Location to Watchlist\ value=\"Add Location to Watchlist\">";
                         echo "</form>";
                     }
                     else{

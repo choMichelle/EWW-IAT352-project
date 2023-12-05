@@ -38,6 +38,52 @@ function addListItem($item) {
     echo "<a href=\"eventdetail.php?eventID=$item\" class=\"list-anchor\"><div class=\"models-list-item\">$item</div></a>";
 }
 
+function isInWatchlist($locationID){
+    if(!isset($_SESSION['db'])){
+        echo "can't fetch database";
+    }
+    else{
+        $db = $_SESSION['db'];
+        $query = "SELECT * FROM watchlist WHERE locationID=? AND userEmail =?";
+        $stmt = $db->prepare($query);
+		$stmt->bind_param('is',$locationID, $_SESSION['userEmail']);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if($stmt -> num_rows > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+}
+
+function addItemToWatchList($locationID){
+    $db = $_SESSION['db'];
+    //GPT taught me INSERT IGNORE INTO
+    $insert_query = "INSERT IGNORE INTO watchlist (locationID, userEmail) VALUES (?,?)";
+    $insert_stmt = mysqli_prepare($db, $insert_query);
+    mysqli_stmt_bind_param($insert_stmt, "is", $locationID,$_SESSION['userEmail']);
+    mysqli_stmt_execute($insert_stmt);
+}
+
+// function showUserWatchlist($userEmail){
+//     $db = $_SESSION['db'];
+//     $query = "SELECT * FROM watchlist WHERE userEmail =?";
+//     $stmt = $db->prepare($query);
+//     $stmt->bind_param('s', $userEmail);
+//     $stmt->execute();
+//     $result = $stmt->get_result();
+//     $bro = $stmt->num_rows;
+//     if ($result->num_rows != 0) {
+//         while ($row = $result->fetch_assoc()) {
+//             addListItem($row['productName']);
+//         }
+//     } else {
+//         echo "Watchlist is empty";
+//     }
+// }
 
 
 

@@ -9,9 +9,9 @@ $errormsg = "";
 
 if (!empty($_POST['submit'])) {
     
-    if (validateTextInput('email') && validateTextInput('password')) {
-        if (str_contains($_POST['email'], "@") && str_contains($_POST['email'], ".")) {
-            $inputEmail = $_POST['email'];
+    if (validateTextInput('userEmail') && validateTextInput('password')) {
+        if (str_contains($_POST['userEmail'], "@") && str_contains($_POST['userEmail'], ".")) {
+            $inputEmail = $_POST['userEmail'];
             $hash_pass = sha1($_POST['password']);
             $query_accounts = "SELECT hashedPassword FROM `users` WHERE email = ?";
         
@@ -25,7 +25,7 @@ if (!empty($_POST['submit'])) {
                 if(!empty($row)){
                     if ($hash_pass == $row['hashedPassword']) {
                         //set session (log in) and redirect
-                        $_SESSION['email'] = $inputEmail;
+                        $_SESSION['userEmail'] = $inputEmail;
                         header("Location: index.php");
                     }
                     

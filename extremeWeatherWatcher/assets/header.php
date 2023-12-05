@@ -6,10 +6,17 @@
     </head>
     <body>
         <div class="nav-bar">
-            <a href=""><div class="nav-button">Link 1</div></a>
-            <a href=""><div class="nav-button">Link 2</div></a>
+            <a href="index.php"><div class="nav-button">Show All Events</div></a>
+            <?php
+                if(isset($_SESSION['userEmail'])) {
+                    echo "<a href=\"\"><div class=\"nav-button\">Show my watchlist</div></a>";
+                }
+                
+            ?>
+            
+            
             <a <?php 
-                if (isset($_SESSION['email'])) {
+                if (isset($_SESSION['userEmail'])) {
                     echo "href=\"logout.php\"";
                 }
                 else {
@@ -17,7 +24,7 @@
                 } 
             ?>><div class="nav-button">
                 <?php
-                    if (isset($_SESSION['email'])) {
+                    if (isset($_SESSION['userEmail'])) {
                         echo "Log out";
                     }
                     else {

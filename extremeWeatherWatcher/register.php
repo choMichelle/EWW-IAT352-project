@@ -6,15 +6,15 @@ include("assets/header.php");
 require_SSL();
 
 //if already logged in, redirect
-if (isset($_SESSION['email'])) {
+if (isset($_SESSION['userEmail'])) {
     header("Location: index.php");
 }
 
 $allInputValid = false;
 $errormsg = "";
 
-if (validateTextInput('fullName') && validateTextInput('username') && validateTextInput('email') &&validateTextInput('password') && validateTextInput('passwordConfirm')) {
-    if (str_contains($_POST['email'], "@") && str_contains($_POST['email'], ".")) {
+if (validateTextInput('username') && validateTextInput('userEmail') &&validateTextInput('password') && validateTextInput('passwordConfirm')) {
+    if (str_contains($_POST['userEmail'], "@") && str_contains($_POST['userEmail'], ".")) {
         if ($_POST['password'] == $_POST['passwordConfirm']) {
             $allInputValid = true;
         }
@@ -37,9 +37,9 @@ if (!empty($_POST["submit"])) {
     if ($allInputValid) {
 
         //check if the entered email is already registered
-        $query_emails = "SELECT count(*) as count FROM users WHERE email=?";
+        $query_emails = "SELECT count(*) as count FROM users WHERE userEmail=?";
         $stmt_emails = mysqli_prepare($db, $query_emails);
-        mysqli_stmt_bind_param($stmt_emails, "s", $_POST['email']);
+        mysqli_stmt_bind_param($stmt_emails, "s", $_POST['userEmail']);
         mysqli_stmt_execute($stmt_emails);
         $emails_result = mysqli_stmt_get_result($stmt_emails);
 
@@ -49,20 +49,20 @@ if (!empty($_POST["submit"])) {
                 echo "An account already exists for this email.";
             }
             else {
-                $postedEmail = $_POST['email'];
-                $fullName = $_POST['fullName'];
+                $postedEmail = $_POST['userEmail'];
                 $username = $_POST['username'];
                 $hashPassword = sha1($_POST['password']);
+                $locationID = $_POST['locationID'];
     
                 //save user data into the db
-                $insert_query = "INSERT INTO users (email, fullName, username, hashedPassword) VALUES (?,?,?,?)";
+                $insert_query = "INSERT INTO users (userEmail, username, hashedPassword,locationID) VALUES (?,?,?,?)";
                 $insert_stmt = mysqli_prepare($db, $insert_query);
                 mysqli_stmt_bind_param($insert_stmt, "ssss", $postedEmail, $fullName, $username, $hashPassword);
                 $res = mysqli_stmt_execute($insert_stmt);
     
                 //if save successful, set session and redirect
                 if ($res) {
-                    $_SESSION['email'] = $postedEmail;
+                    $_SESSION['userEmail'] = $postedEmail;
                     header("Location: index.php");
                     exit;
                 }
@@ -85,9 +85,9 @@ if (!empty($_POST["submit"])) {
     <form action="register.php" method="POST">
         
         <?php 
-            makeTextEntry('text', 'fullName', 'Full name', 'fullName');
             makeTextEntry('text', 'username', 'Username', 'username');
             makeTextEntry('text', 'email', 'Email', 'email');
+            echo"need to convert locationID from contitent,country,state/province selection, for now, just enter number";
             makeTextEntry('password', 'password', 'Password', 'password');
             makeTextEntry('password', 'passwordConfirm', 'Confirm password', 'passwordConfirm'); 
         ?>
