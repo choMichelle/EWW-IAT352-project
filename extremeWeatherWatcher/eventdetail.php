@@ -60,28 +60,11 @@ else{
 
 mysqli_free_result($result);
 
-//query to get location details
-$query_location = "SELECT continent, country, stateOrProvince FROM `location` WHERE locationID=?";
-$stmt_location = mysqli_prepare($db, $query_location);
-
-if (!$stmt_location) {
-    die("Error:" .mysqli_error($db));
-}
-else {
-    mysqli_stmt_bind_param($stmt_location, "i", $eventLocationID);
-    mysqli_stmt_execute($stmt_location);
-
-    $result = mysqli_stmt_get_result($stmt_location);
-
-    if (mysqli_num_rows($result) != 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $eventContinent = $row['continent'];
-            $eventCountry = $row['country'];
-            $eventState = $row['stateOrProvince'];
-        }
-    }
-}
-mysqli_free_result($result);
+//get the location of the event
+$eventLocationDetails = getEventLocation($db, $eventLocationID);
+$eventContinent = $eventLocationDetails['continent'];
+$eventCountry = $eventLocationDetails['country'];
+$eventState = $eventLocationDetails['state'];
 
 ?>
 

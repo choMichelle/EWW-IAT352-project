@@ -107,6 +107,34 @@ function makeCountryDropdown($htmlID){
 //     }
 // }
 
+//takes db variable, event's locationID
+//returns an associative array with location. keys are: continent, country, state
+function getEventLocation($db, $eventLocationID) {
+    //query to get location details
+    $query_location = "SELECT continent, country, stateOrProvince FROM `location` WHERE locationID=?";
+    $stmt_location = mysqli_prepare($db, $query_location);
+
+    if (!$stmt_location) {
+        die("Error:" .mysqli_error($db));
+    }
+    else {
+        mysqli_stmt_bind_param($stmt_location, "i", $eventLocationID);
+        mysqli_stmt_execute($stmt_location);
+
+        $result = mysqli_stmt_get_result($stmt_location);
+
+        if (mysqli_num_rows($result) != 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $eventContinent = $row['continent'];
+                $eventCountry = $row['country'];
+                $eventState = $row['stateOrProvince'];
+            }
+            $eventLocation = array("continent"=>$eventContinent, "country"=>$eventCountry, "state"=>$eventState);
+        }
+        mysqli_free_result($result);
+        return $eventLocation;
+    }
+}
 
 
 ?>
