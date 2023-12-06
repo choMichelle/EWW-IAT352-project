@@ -16,17 +16,7 @@ if (!$weather_event_result) {
 <html>
     <head>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function(){
-        // Assuming you have an element with id "filterCountry"
-        $("#filterCountry").on("change", function() {
-            var selected = $(this).val().toLowerCase();
-            $("#eventTable a").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(selected) > -1);
-            });
-        });
-    });
-    </script>    
+    <script src = "js/locationFilter.js" defer></script>    
     <title> Extreme Weather Watcher</title>
     </head>
     <body>
