@@ -27,7 +27,7 @@ function makeTextEntry($type, $label, $text, $varname) {
     echo "<label for=\"$label\">$text:</label>";
     echo "<input type=\"$type\" id=\"$varname\" name=\"$varname\"";
     
-    if (isset($_POST[$varname]) && ($_POST[$varname] != "/")) {
+    if (isset($_POST[$varname]) && ($_POST[$varname] != "/") && !empty($_POST[$varname])) {
         echo "value=$_POST[$varname]";
     }
     

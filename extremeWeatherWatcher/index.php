@@ -16,7 +16,7 @@ if (!$weather_event_result) {
 <html>
     <head>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src = "js/locationFilter.js" defer></script>    
+
     <title> Extreme Weather Watcher</title>
     </head>
     <body>
@@ -37,6 +37,6 @@ if (!$weather_event_result) {
         </div>
     </div>
 
-
+    <script src = "js/locationFilter.js" defer></script>    
     </body>
 </html>
