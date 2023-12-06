@@ -16,7 +16,7 @@ SSLtoHTTP();
         }
     }
     else{
-        $_SESSION['callback_url'] = 'addtowatchlist.php';
+        $_SESSION['callback_url'] = 'watchlist.php';
         header("Location: login.php");
     }
 
@@ -29,6 +29,7 @@ SSLtoHTTP();
 
     </head>
     <body>
+        
 
     </body>
 </html>

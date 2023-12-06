@@ -4,6 +4,8 @@
 require_once("assets/initializer.php");
 include("assets/header.php");
 
+SSLtoHTTP();
+
 $query_weather_event = "SELECT * FROM weatherevents";
 $weather_event_result = mysqli_query($db,$query_weather_event);
 if (!$weather_event_result) {
@@ -16,12 +18,12 @@ if (!$weather_event_result) {
     <title> Extreme Weather Watcher</title>
     </head>
     <body>
-    <div>
+    <div class="models-container">
         <?php
-
+        
             if(mysqli_num_rows($weather_event_result)!= 0){
                 while($row = mysqli_fetch_assoc($weather_event_result)){
-                    addListItem($row['eventID']);
+                    addListItem($row['title'], $row['eventID']);
                 }
             }
             mysqli_free_result($weather_event_result);

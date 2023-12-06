@@ -13,7 +13,7 @@ if (isset($_SESSION['userEmail'])) {
 $allInputValid = false;
 $errormsg = "";
 
-if (validateTextInput('username') && validateTextInput('userEmail') &&validateTextInput('password') && validateTextInput('passwordConfirm')) {
+if (validateTextInput('username') && validateTextInput('userEmail') && validateTextInput('country') && validateTextInput('password') && validateTextInput('passwordConfirm')) {
     if (str_contains($_POST['userEmail'], "@") && str_contains($_POST['userEmail'], ".")) {
         if ($_POST['password'] == $_POST['passwordConfirm']) {
             $allInputValid = true;
@@ -52,12 +52,12 @@ if (!empty($_POST["submit"])) {
                 $postedEmail = $_POST['userEmail'];
                 $username = $_POST['username'];
                 $hashPassword = sha1($_POST['password']);
-                $locationID = $_POST['locationID'];
+                $userCountry = ucfirst(strtolower($_POST['country']));
     
                 //save user data into the db
-                $insert_query = "INSERT INTO users (userEmail, username, hashedPassword,locationID) VALUES (?,?,?,?)";
+                $insert_query = "INSERT INTO users (userEmail, username, hashedPassword, country) VALUES (?,?,?,?)";
                 $insert_stmt = mysqli_prepare($db, $insert_query);
-                mysqli_stmt_bind_param($insert_stmt, "ssss", $postedEmail, $fullName, $username, $hashPassword);
+                mysqli_stmt_bind_param($insert_stmt, "ssss", $postedEmail, $username, $hashPassword, $userCountry);
                 $res = mysqli_stmt_execute($insert_stmt);
     
                 //if save successful, set session and redirect
@@ -86,8 +86,8 @@ if (!empty($_POST["submit"])) {
         
         <?php 
             makeTextEntry('text', 'username', 'Username', 'username');
-            makeTextEntry('text', 'email', 'Email', 'email');
-            echo"need to convert locationID from contitent,country,state/province selection, for now, just enter number";
+            makeTextEntry('text', 'email', 'Email', 'userEmail');
+            makeTextEntry('text', 'country', 'Your home country', 'country');
             makeTextEntry('password', 'password', 'Password', 'password');
             makeTextEntry('password', 'passwordConfirm', 'Confirm password', 'passwordConfirm'); 
         ?>

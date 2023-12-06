@@ -9,7 +9,7 @@
             <a href="index.php"><div class="nav-button">Show All Events</div></a>
             <?php
                 if(isset($_SESSION['userEmail'])) {
-                    echo "<a href=\"\"><div class=\"nav-button\">Show my watchlist</div></a>";
+                    echo "<a href=\"watchlist.php\"><div class=\"nav-button\">Show my watchlist</div></a>";
                 }
                 
             ?>
@@ -17,7 +17,7 @@
             
             <a <?php 
                 if (isset($_SESSION['userEmail'])) {
-                    echo "href=\"logout.php\"";
+                    echo "href=\"assets/logout.php\"";
                 }
                 else {
                     echo "href=\"login.php\"";

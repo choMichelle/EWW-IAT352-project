@@ -34,19 +34,19 @@ function makeTextEntry($type, $label, $text, $varname) {
     echo " />";
 }
 
-function addListItem($item) {
-    echo "<a href=\"eventdetail.php?eventID=$item\" class=\"list-anchor\"><div class=\"models-list-item\">$item</div></a>";
+function addListItem($itemName, $itemID) {
+    echo "<a href=\"eventdetail.php?eventID=$itemID\" class=\"list-anchor\"><div class=\"models-list-item\">$itemName</div></a>";
 }
 
-function isInWatchlist($locationID){
+function isInWatchlist($country){
     if(!isset($_SESSION['db'])){
         echo "can't fetch database";
     }
     else{
         $db = $_SESSION['db'];
-        $query = "SELECT * FROM watchlist WHERE locationID=? AND userEmail =?";
+        $query = "SELECT * FROM watchlist WHERE country=? AND userEmail =?";
         $stmt = $db->prepare($query);
-		$stmt->bind_param('is',$locationID, $_SESSION['userEmail']);
+		$stmt->bind_param('is',$country, $_SESSION['userEmail']);
         $stmt->execute();
         $stmt->store_result();
 
@@ -59,12 +59,12 @@ function isInWatchlist($locationID){
     }
 }
 
-function addItemToWatchList($locationID){
+function addItemToWatchList($country){
     $db = $_SESSION['db'];
     //GPT taught me INSERT IGNORE INTO
-    $insert_query = "INSERT IGNORE INTO watchlist (locationID, userEmail) VALUES (?,?)";
+    $insert_query = "INSERT IGNORE INTO watchlist (country, userEmail) VALUES (?,?)";
     $insert_stmt = mysqli_prepare($db, $insert_query);
-    mysqli_stmt_bind_param($insert_stmt, "is", $locationID,$_SESSION['userEmail']);
+    mysqli_stmt_bind_param($insert_stmt, "is", $country, $_SESSION['userEmail']);
     mysqli_stmt_execute($insert_stmt);
 }
 
