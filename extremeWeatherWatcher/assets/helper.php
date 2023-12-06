@@ -68,6 +68,28 @@ function addItemToWatchList($country){
     mysqli_stmt_execute($insert_stmt);
 }
 
+function makeCountryDropdown($htmlID){
+    $db = $_SESSION['db'];
+    $query_all_countries = "SELECT DISTINCT location.country FROM location";
+    $all_countries_result = mysqli_query($db,$query_all_countries);
+    if (!$all_countries_result) {
+        die("query failed");
+    }
+    echo "<select id=\"$htmlID\" name=\"order_num\" id=\"order_num\">";
+    echo "<option value=\"\"></option>";
+    if(mysqli_num_rows($all_countries_result) != 0){
+        while($row = mysqli_fetch_assoc($all_countries_result)){
+            $selected = ((isset($_POST['filteredCountry'])) && ($_POST['filteredCountry'] == $row['country'])) ? 'selected' : '';
+            echo "<option value='{$row['country']}' $selected>{$row['country']}</option>";
+        }
+    }
+    echo "</select>";
+    mysqli_free_result($all_countries_result);
+}
+
+
+
+
 // function showUserWatchlist($userEmail){
 //     $db = $_SESSION['db'];
 //     $query = "SELECT * FROM watchlist WHERE userEmail =?";
