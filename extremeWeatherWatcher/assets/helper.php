@@ -34,8 +34,8 @@ function makeTextEntry($type, $label, $text, $varname) {
     echo " />";
 }
 
-function addListItem($itemName, $itemID) {
-    echo "<a href=\"eventdetail.php?eventID=$itemID\" class=\"list-anchor\"><div class=\"models-list-item\">$itemName</div></a>";
+function addListItem($itemName, $itemID, $itemLocation) {
+    echo "<a href=\"eventdetail.php?eventID=$itemID\" class=\"list-anchor\"><div class=\"models-list-item\">"  . $itemLocation['continent'] . " - " . $itemLocation['country']  . ": " .  "$itemName</div></a>";
 }
 
 function isInWatchlist($country){
