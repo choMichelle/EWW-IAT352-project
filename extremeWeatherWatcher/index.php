@@ -21,7 +21,7 @@ if (!$weather_event_result) {
     </head>
     <body>
     <div class="models-container">
-        <?php makeCountryDropdown("filterCountry");?>
+        <?php makeCountryDropdown("Country filter","filterCountry","filteredCountry");?>
         <div id = "eventTable">
         <?php
             if(mysqli_num_rows($weather_event_result)!= 0){

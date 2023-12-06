@@ -68,18 +68,19 @@ function addItemToWatchList($country){
     mysqli_stmt_execute($insert_stmt);
 }
 
-function makeCountryDropdown($htmlID){
+function makeCountryDropdown($label,$htmlID,$varname){
     $db = $_SESSION['db'];
     $query_all_countries = "SELECT DISTINCT location.country FROM location";
     $all_countries_result = mysqli_query($db,$query_all_countries);
     if (!$all_countries_result) {
         die("query failed");
     }
-    echo "<select id=\"$htmlID\" name=\"order_num\" id=\"order_num\">";
+    echo "<label for=\"$htmlID\">$label:</label>";
+    echo "<select id=\"$htmlID\" name=\"$varname\">";
     echo "<option value=\"\"></option>";
     if(mysqli_num_rows($all_countries_result) != 0){
         while($row = mysqli_fetch_assoc($all_countries_result)){
-            $selected = ((isset($_POST['filteredCountry'])) && ($_POST['filteredCountry'] == $row['country'])) ? 'selected' : '';
+            $selected = ((isset($_POST[$varname])) && ($_POST[$varname] == $row['country'])) ? 'selected' : '';
             echo "<option value='{$row['country']}' $selected>{$row['country']}</option>";
         }
     }
