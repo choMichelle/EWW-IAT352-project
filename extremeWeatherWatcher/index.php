@@ -16,7 +16,7 @@ if (!$weather_event_result) {
 <html>
     <head>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
     <title> Extreme Weather Watcher</title>
     </head>
     <body>

@@ -64,8 +64,14 @@ function addItemToWatchList($country){
     //GPT taught me INSERT IGNORE INTO
     $insert_query = "INSERT IGNORE INTO watchlist (country, userEmail) VALUES (?,?)";
     $insert_stmt = mysqli_prepare($db, $insert_query);
-    mysqli_stmt_bind_param($insert_stmt, "is", $country, $_SESSION['userEmail']);
-    mysqli_stmt_execute($insert_stmt);
+    mysqli_stmt_bind_param($insert_stmt, "ss", $country, $_SESSION['userEmail']);
+    if (mysqli_stmt_execute($insert_stmt)) {
+        // Item added successfully
+    } else {
+        // Handle the error
+        echo "Error: " . mysqli_stmt_error($insert_stmt);
+    }
+    
 }
 
 function makeCountryDropdown($label,$htmlID,$varname){
@@ -135,6 +141,24 @@ function getEventLocation($db, $eventLocationID) {
         mysqli_free_result($result);
         return $eventLocation;
     }
+}
+
+function showWatchlistWithRemoveButton(){
+    $db = $_SESSION['db'];
+    $query_all_countries = "SELECT DISTINCT country FROM watchlist WHERE userEmail = ?";
+    $stmt = mysqli_prepare($db, $query_all_countries);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "s", $_SESSION['userEmail']);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $country);
+        while (mysqli_stmt_fetch($stmt)) {
+            echo "<li data-country=" . $country . ">";
+            echo $country;
+            echo "<a class=\"removeButton\">Remove</a>";
+            echo "</li>";
+        }
+    mysqli_stmt_close($stmt);
+}
 }
 
 
