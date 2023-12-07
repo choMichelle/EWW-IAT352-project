@@ -197,15 +197,68 @@ function getUserCountry(){
     }
 }
 
-function showEventBasedOnCountries($country,$count){
+function generateEventPreview($queryResult, $count) {
+    echo "<table>";
+    for ($i = 0; $i < $count && $row = mysqli_fetch_assoc($queryResult); $i++) {
+        
+        if($i % 3 == 0){
+            echo "<tr class = \"event-container-row\">";
+        }
+    
+        // Display title, quick data, location, etc.
+        echo "<td class = \"event-container\">";
+        echo "<table class=\"event-header\">";
+        echo "<tr>";
+        echo "<td class=\"event-title\">" . $row['title'] . "</td>";
+        echo "<td><a href=\"eventdetail.php?eventID=". $row['eventID'] ."\" class=\"event-title\">" . "Show more" . "</a></td>";
+        echo "</tr>";
+    
+        echo "<tr>";
+    
+        echo "<td>";
+        echo "<div>" . $row['severity'] . "</div>";
+        echo "<div>" . $row['type'] . "</div>";
+        echo "</td>";
+    
+        echo "<td>";
+        echo "<div>" . $row['stateOrProvince'] . ", " . $row['country'] ."</div>";
+        echo "<div>" . $row['date'] . "</div>";
+        echo "</td>";
+    
+        echo "</tr>";
+        echo "</table class = \"event-content\">";
+    
+        echo "<table>";
+        echo "<tr>";
+        echo "<td>";
+        echo "<div>imageplaceholder</div>";
+        echo "</td>";
+        echo "</tr>";
+    
+        echo "<tr>";
+        // Display a preview of the description (e.g., first 100 characters)
+        $descriptionPreview = substr($row['description'], 0, 100);
+        echo "<td>" . $descriptionPreview . "..." . "</td>";
+        echo "</tr>";
+    
+        echo "</table>";
+        echo "</td>";
+    
+    
+    }
+    
+    echo "</table>";
+}
+
+function showEventBasedOnCountries($country, $count){
     $db = $_SESSION['db'];
     if(empty($country)){
         $query = "SELECT * FROM weatherevents 
-          INNER JOIN location ON weatherevents.locationID = location.locationID";
+          INNER JOIN `location` ON weatherevents.locationID = location.locationID";
     }
     else{
     $query = "SELECT * FROM weatherevents 
-          INNER JOIN location ON weatherevents.locationID = location.locationID  
+          INNER JOIN `location` ON weatherevents.locationID = location.locationID  
           WHERE location.country = ?";
     }
     $stmt = mysqli_prepare($db,$query);
@@ -218,65 +271,35 @@ function showEventBasedOnCountries($country,$count){
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
     }
-    echo "<table>";
 
-if (mysqli_num_rows($result) <= 0) {
-    echo "<tr><td>Nothing to show here</td></tr>";
-    mysqli_free_result($result);
-    echo "</table>";
-    return;
-}
-
-for ($i = 0; $i < $count && $row = mysqli_fetch_assoc($result); $i++) {
-
-    if($i % 3 == 0){
-        echo "<tr class = \"event-container-row\">";
+    if (mysqli_num_rows($result) <= 0) {
+        echo "<table>";
+        echo "<tr><td>Nothing to show here</td></tr>";
+        mysqli_free_result($result);
+        echo "</table>";
+        return;
+    }
+    else {
+        generateEventPreview($result, $count);
     }
 
-    // Display title, quick data, location, etc.
-    echo "<td class = \"event-container\">";
-    echo "<table class=\"event-header\">";
-    echo "<tr>";
-    echo "<td class=\"event-title\">" . $row['title'] . "</td>";
-    echo "<td><a href=\"eventdetail.php?eventID=". $row['eventID'] ."\" class=\"event-title\">" . "Show more" . "</a></td>";
-    echo "</tr>";
-
-    echo "<tr>";
-
-    echo "<td>";
-    echo "<div>" . $row['severity'] . "</div>";
-    echo "<div>" . $row['type'] . "</div>";
-    echo "</td>";
-
-    echo "<td>";
-    echo "<div>" . $row['country'] . "," . $row['stateOrProvince'] ."</div>";
-    echo "<div>" . $row['date'] . "</div>";
-    echo "</td>";
-
-    echo "</tr>";
-    echo "</table class = \"event-content\">";
-
-    echo "<table>";
-    echo "<tr>";
-    echo "<td>";
-    echo "<div>imageplaceholder</div>";
-    echo "</td>";
-    echo "</tr>";
-
-    echo "<tr>";
-    // Display a preview of the description (e.g., first 100 characters)
-    $descriptionPreview = substr($row['description'], 0, 100);
-    echo "<td>" . $descriptionPreview . "..." . "</td>";
-    echo "</tr>";
-
-    echo "</table>";
-    echo "</td>";
-
-
 }
 
-echo "</table>";
+function showEventByNewestDate($count) {
+    $db = $_SESSION['db'];
+    $query_date = "SELECT * FROM weatherevents
+        INNER JOIN `location` ON weatherevents.locationID = location.locationID
+        ORDER BY `date` DESC";
+    $stmt = mysqli_prepare($db, $query_date);
 
+    if ($stmt) {
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    }
+
+    if (mysqli_num_rows($result) > 0) {
+        generateEventPreview($result, $count);
+    }
 }
 
 ?>

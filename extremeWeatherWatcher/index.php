@@ -22,9 +22,15 @@ if (!$weather_event_result) {
     <body>
     <div class="welcome"> <?php showUsername();?> </div>
     <div>
-        <h2>Extreme weather events from your country <?php echo getUserCountry() ?></h2>
-        <?php 
+        <?php
+        if (isset($_SESSION['userEmail'])) {
+            echo "<h2>Extreme weather events from your country</h2>";
             showEventBasedOnCountries(getUserCountry(),5);
+        }
+        else {
+            echo "<h2>Latest extreme weather events around the world</h2>";
+            showEventByNewestDate(5);
+        }
         ?>
     </div>
 
