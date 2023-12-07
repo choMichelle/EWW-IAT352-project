@@ -22,7 +22,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 50%;
+    max-width: 100%;
     margin: 1rem auto;
     padding: 1rem;
 }
@@ -101,4 +101,71 @@ input[type="submit"] {
     font-size: 1rem;
     text-decoration: underline;
     cursor: pointer;
+}
+
+
+/* new */
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Table cell styles */
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Event container styles */
+.event-container {
+    max-width: 450px;
+    margin: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+}
+
+/* Event container row styles */
+.event-container-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+/* Event header styles */
+.event-header {
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    font-weight: bold;
+}
+
+/* Event title styles */
+.event-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Event content styles */
+.event-content {
+    padding: 10px;
+}
+
+/* Image placeholder styles */
+.image-placeholder {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Description preview styles */
+.description-preview {
+    margin-top: 10px;
+    font-style: italic;
+    color: #555;
 }

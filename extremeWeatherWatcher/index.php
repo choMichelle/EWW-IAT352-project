@@ -22,15 +22,19 @@ if (!$weather_event_result) {
     <body>
     <div class="welcome"> <?php showUsername();?> </div>
     <div>
-        <h2>Extreme weather events from your country</h2>
+        <h2>Extreme weather events from your country <?php echo getUserCountry() ?></h2>
         <?php 
-            showEventBasedOnCountries("United States",5);
+            showEventBasedOnCountries(getUserCountry(),5);
         ?>
     </div>
 
     <div class="models-container">
-        <?php makeCountryDropdown("Country filter","filterCountry","filteredCountry");?>
+        
+        
+            <h2> Extreme weather around the world</h2>
+            <?php makeCountryDropdown("Country filter","filterCountry","filteredCountry");?>
         <div id = "eventTable">
+            <?php showEventBasedOnCountries("",12); ?>
         <?php
             if(mysqli_num_rows($weather_event_result)!= 0){
                 while($row = mysqli_fetch_assoc($weather_event_result)){

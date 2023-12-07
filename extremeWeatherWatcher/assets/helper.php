@@ -181,16 +181,40 @@ function showUsername(){
     }
 }
 
+function getUserCountry(){
+    $db = $_SESSION['db'];
+    if(isset($_SESSION['userEmail'])){
+        $query = "SELECT country FROM users WHERE userEmail = ?";
+        $stmt = mysqli_prepare($db,$query);
+        mysqli_stmt_bind_param($stmt, "s", $_SESSION['userEmail']);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $username = mysqli_fetch_assoc($result);
+        $country = $username['country'];
+        mysqli_stmt_free_result($stmt);
+        mysqli_stmt_close($stmt);
+        return $country;
+    }
+}
+
 function showEventBasedOnCountries($country,$count){
     $db = $_SESSION['db'];
+    if(empty($country)){
+        $query = "SELECT * FROM weatherevents 
+          INNER JOIN location ON weatherevents.locationID = location.locationID";
+    }
+    else{
     $query = "SELECT * FROM weatherevents 
           INNER JOIN location ON weatherevents.locationID = location.locationID  
           WHERE location.country = ?";
+    }
     $stmt = mysqli_prepare($db,$query);
     
 
     if($stmt){
-        mysqli_stmt_bind_param($stmt,"s",$country);
+        if(!empty($country)){
+            mysqli_stmt_bind_param($stmt,"s",$country);
+        }
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
     }
@@ -205,27 +229,34 @@ if (mysqli_num_rows($result) <= 0) {
 
 for ($i = 0; $i < $count && $row = mysqli_fetch_assoc($result); $i++) {
 
+    if($i % 3 == 0){
+        echo "<tr class = \"event-container-row\">";
+    }
 
     // Display title, quick data, location, etc.
+    echo "<td class = \"event-container\">";
+    echo "<table class=\"event-header\">";
+    echo "<tr>";
+    echo "<td class=\"event-title\">" . $row['title'] . "</td>";
+    echo "<td><a href=\"eventdetail.php?eventID=". $row['eventID'] ."\" class=\"event-title\">" . "Show more" . "</a></td>";
+    echo "</tr>";
+
+    echo "<tr>";
+
     echo "<td>";
+    echo "<div>" . $row['severity'] . "</div>";
+    echo "<div>" . $row['type'] . "</div>";
+    echo "</td>";
+
+    echo "<td>";
+    echo "<div>" . $row['country'] . "," . $row['stateOrProvince'] ."</div>";
+    echo "<div>" . $row['date'] . "</div>";
+    echo "</td>";
+
+    echo "</tr>";
+    echo "</table class = \"event-content\">";
+
     echo "<table>";
-    echo "<tr>";
-    echo "<td class=\"event-header\">" . $row['title'] . "</td>";
-    echo "</tr>";
-
-    echo "<tr>";
-
-    echo "<td>";
-    echo "<div> Weather type: " . $row['type'] . "</div>";
-    echo "<div> Severity: " . $row['severity'] . "</div>";
-    echo "</td>";
-
-    echo "<td>";
-    echo "<div>{$row['country']}, {$row['stateOrProvince']} {$row['date']}</div>";
-    echo "</td>";
-
-    echo "</tr>";
-
     echo "<tr>";
     echo "<td>";
     echo "<div>imageplaceholder</div>";
