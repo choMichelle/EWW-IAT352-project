@@ -1,22 +1,27 @@
 $(document).ready(function() {
     $('.removeButton').on('click', function(event) {
-        // Make sure clicking this button will not redirect the page
         event.preventDefault();
-
-        // Get the parent with data-prod_id
+    
         var country = $(this).closest('li').attr('data-country');
-        alert(country);
-
+        var listItem = $('#' + country);
+    
+        // Show loading indicator
+        listItem.html('Removing...');
+    
         $.ajax({
             url: 'removeCountryFromWatchlist.php',
-            type: 'POST',
+            type: 'post',
             data: {removedCountryName: country},
-        })
-        .done(function(res) {
-            alert(res);
-        })
-        .fail(function(res) {
-            console.log("error");
+            success: function(data){
+                if (country) {
+                    listItem.hide();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: " + error);
+                // Handle error and update UI accordingly
+                listItem.html('Error removing country.');
+            }
         });
     });
 });

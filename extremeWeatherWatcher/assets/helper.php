@@ -46,7 +46,7 @@ function isInWatchlist($country){
         $db = $_SESSION['db'];
         $query = "SELECT * FROM watchlist WHERE country=? AND userEmail =?";
         $stmt = $db->prepare($query);
-		$stmt->bind_param('is',$country, $_SESSION['userEmail']);
+		$stmt->bind_param('ss',$country, $_SESSION['userEmail']);
         $stmt->execute();
         $stmt->store_result();
 
@@ -147,18 +147,23 @@ function showWatchlistWithRemoveButton(){
     $db = $_SESSION['db'];
     $query_all_countries = "SELECT DISTINCT country FROM watchlist WHERE userEmail = ?";
     $stmt = mysqli_prepare($db, $query_all_countries);
+   
     if ($stmt) {
         mysqli_stmt_bind_param($stmt, "s", $_SESSION['userEmail']);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $country);
-        while (mysqli_stmt_fetch($stmt)) {
-            echo "<li data-country=" . $country . ">";
-            echo $country;
-            echo "<a class=\"removeButton\">Remove</a>";
-            echo "</li>";
+        mysqli_stmt_execute($stmt);    
+        $result = mysqli_stmt_get_result($stmt);
+            while ($country = mysqli_fetch_assoc($result)) {
+                echo "<li id=\"". $country['country'] . "\" data-country=\"" . htmlspecialchars($country['country']) . "\">";
+                echo htmlspecialchars($country['country']);
+                echo "<a class=\"removeButton\">Remove</a>";
+                echo "</li>";
+            }
+            mysqli_stmt_free_result($stmt);
+            mysqli_stmt_close($stmt);   
         }
-    mysqli_stmt_close($stmt);
-}
+    else {
+        echo "Error: Unable to prepare statement";
+    }
 }
 
 

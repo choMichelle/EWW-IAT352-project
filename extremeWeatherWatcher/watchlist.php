@@ -6,25 +6,7 @@ include("assets/header.php");
 SSLtoHTTP();
 ?>
 
-<?php
-    if (isset($_SESSION['userEmail'])) {    
-        $_POST['newWatchListCountryName'] = "Canada";
-        //save user data into the db
-        if(isset($_POST['newWatchListCountryName'])){
-            addItemToWatchList($_POST['newWatchListCountryName']);
-            unset($_POST['newWatchListCountryName']);
-        }
-    }
-    else{
-        $_SESSION['callback_url'] = 'watchlist.php';
-        header("Location: login.php");
-    }
 
-    showWatchlistWithRemoveButton();
-
-
-
-?>
 
 <html lang="en">
     <head>
@@ -32,7 +14,19 @@ SSLtoHTTP();
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     </head>
     <body>
-        
+    <?php
+    if (isset($_SESSION['userEmail'])) {    
+        if(isset($_POST['newWatchListCountryName'])){
+            addItemToWatchList($_POST['newWatchListCountryName']);
+            unset($_POST['newWatchListCountryName']);
+        }
+        showWatchlistWithRemoveButton();
+    }
+    else{
+        $_SESSION['callback_url'] = 'watchlist.php';
+        header("Location: login.php");
+    }
+?>
 
     </body>
     <script src = "js/removeWatchlistItem.js" defer></script>    
