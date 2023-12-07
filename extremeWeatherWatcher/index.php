@@ -34,18 +34,12 @@ if (!$weather_event_result) {
             <h2> Extreme weather around the world</h2>
             <?php makeCountryDropdown("Country filter","filterCountry","filteredCountry");?>
         <div id = "eventTable">
-            <?php showEventBasedOnCountries("",12); ?>
-        <?php
-            if(mysqli_num_rows($weather_event_result)!= 0){
-                while($row = mysqli_fetch_assoc($weather_event_result)){
-                    $eventLocationDetails = getEventLocation($db, $row['locationID']);
-                    addListItem($row['title'], $row['eventID'], $eventLocationDetails);
-                }
-            }
+            <?php showEventBasedOnCountries("",12); 
+
             
             mysqli_free_result($weather_event_result);
             $db->close();
-        ?>
+            ?>
         </div>
     </div>
 
