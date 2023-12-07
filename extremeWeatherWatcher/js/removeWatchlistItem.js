@@ -4,7 +4,7 @@ $(document).ready(function() {
     
         var country = $(this).closest('li').attr('data-country');
         var listItem = $('#' + country);
-    
+        console.log(country);
         // Show loading indicator
         listItem.html('Removing...');
     

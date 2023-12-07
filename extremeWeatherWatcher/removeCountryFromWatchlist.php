@@ -6,11 +6,11 @@ if(isset($_POST['removedCountryName'])) {
   $query= "DELETE FROM watchlist WHERE country = ? AND userEmail = ?" ;
   $stmt = mysqli_prepare($db, $query);
 
-  
+  $fixed_str = str_replace('_', ' ', $_POST['removedCountryName']);
 
   if ($stmt) {
 
-    mysqli_stmt_bind_param($stmt, "ss",  $_POST['removedCountryName'], $_SESSION['userEmail']);
+    mysqli_stmt_bind_param($stmt, "ss", $fixed_str, $_SESSION['userEmail']);
     mysqli_stmt_execute($stmt);
 
     mysqli_stmt_close($stmt);

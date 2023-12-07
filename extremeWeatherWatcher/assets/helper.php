@@ -152,9 +152,9 @@ function showWatchlistWithRemoveButton(){
         mysqli_stmt_bind_param($stmt, "s", $_SESSION['userEmail']);
         mysqli_stmt_execute($stmt);    
         $result = mysqli_stmt_get_result($stmt);
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<li id=\"". $row['country'] . "\" data-country=\"" . htmlspecialchars($row['country']) . "\">";
-                echo htmlspecialchars($row['country']);
+            while ($country = mysqli_fetch_assoc($result)) {
+                echo "<li id=\"". str_replace(' ', '_', $country['country']) . "\" data-country=\"" . str_replace(' ', '_', $country['country']) . "\">";
+                echo htmlspecialchars($country['country']);
                 echo "<a class=\"removeButton\">Remove</a>";
                 echo "</li>";
             }

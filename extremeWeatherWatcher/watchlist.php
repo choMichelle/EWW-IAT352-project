@@ -16,10 +16,12 @@ SSLtoHTTP();
     <body>
     <?php
     if (isset($_SESSION['userEmail'])) {    
-        if(isset($_POST['newWatchListCountryName'])){
-            addItemToWatchList($_POST['newWatchListCountryName']);
-            unset($_POST['newWatchListCountryName']);
-        }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+            if(isset($_POST['newWatchListCountryName'])){
+                addItemToWatchList($_POST['newWatchListCountryName']);
+                unset($_POST['newWatchListCountryName']);
+            }
+    }
         showWatchlistWithRemoveButton();
     }
     else{
