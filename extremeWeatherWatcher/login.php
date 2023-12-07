@@ -18,8 +18,7 @@ if (!empty($_POST['submit'])) {
         mysqli_stmt_bind_param($stmt_accounts, "s", $inputEmail);
         mysqli_stmt_execute($stmt_accounts);
         $result = mysqli_stmt_get_result($stmt_accounts);
-    
-        if ($result) {
+        if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             if(!empty($row)){
                 if ($hash_pass == $row['hashedPassword']) {
@@ -30,6 +29,10 @@ if (!empty($_POST['submit'])) {
                 
             }
             
+        }
+        else{
+
+            $errormsg = "Incorrect email or password";
         }
         
     }
@@ -50,7 +53,7 @@ if (!empty($_POST['submit'])) {
     ?>
         <form action="login.php" method="POST">
             <label for="email">Email: </label>
-            <input type="text" id="userEmail" name="email" />
+            <input type="text" id="userEmail" name="userEmail" />
 
             <label for="password">Password: </label>
             <input type="password" id="password" name="password" />
