@@ -152,9 +152,9 @@ function showWatchlistWithRemoveButton(){
         mysqli_stmt_bind_param($stmt, "s", $_SESSION['userEmail']);
         mysqli_stmt_execute($stmt);    
         $result = mysqli_stmt_get_result($stmt);
-            while ($country = mysqli_fetch_assoc($result)) {
-                echo "<li id=\"". $country['country'] . "\" data-country=\"" . htmlspecialchars($country['country']) . "\">";
-                echo htmlspecialchars($country['country']);
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<li id=\"". $row['country'] . "\" data-country=\"" . htmlspecialchars($row['country']) . "\">";
+                echo htmlspecialchars($row['country']);
                 echo "<a class=\"removeButton\">Remove</a>";
                 echo "</li>";
             }
@@ -166,5 +166,86 @@ function showWatchlistWithRemoveButton(){
     }
 }
 
+function showUsername(){
+    $db = $_SESSION['db'];
+    if(isset($_SESSION['userEmail'])){
+        $query = "SELECT username FROM users WHERE userEmail = ?";
+        $stmt = mysqli_prepare($db,$query);
+        mysqli_stmt_bind_param($stmt, "s", $_SESSION['userEmail']);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $username = mysqli_fetch_assoc($result);
+        echo "Welcome " . $username['username'];
+        mysqli_stmt_free_result($stmt);
+        mysqli_stmt_close($stmt);
+    }
+}
+
+function showEventBasedOnCountries($country,$count){
+    $db = $_SESSION['db'];
+    $query = "SELECT * FROM weatherevents 
+          INNER JOIN location ON weatherevents.locationID = location.locationID  
+          WHERE location.country = ?";
+    $stmt = mysqli_prepare($db,$query);
+    
+
+    if($stmt){
+        mysqli_stmt_bind_param($stmt,"s",$country);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    }
+    echo "<table>";
+
+if (mysqli_num_rows($result) <= 0) {
+    echo "<tr><td>Nothing to show here</td></tr>";
+    mysqli_free_result($result);
+    echo "</table>";
+    return;
+}
+
+for ($i = 0; $i < $count && $row = mysqli_fetch_assoc($result); $i++) {
+
+
+    // Display title, quick data, location, etc.
+    echo "<td>";
+    echo "<table>";
+    echo "<tr>";
+    echo "<td class=\"event-header\">" . $row['title'] . "</td>";
+    echo "</tr>";
+
+    echo "<tr>";
+
+    echo "<td>";
+    echo "<div> Weather type: " . $row['type'] . "</div>";
+    echo "<div> Severity: " . $row['severity'] . "</div>";
+    echo "</td>";
+
+    echo "<td>";
+    echo "<div>{$row['country']}, {$row['stateOrProvince']} {$row['date']}</div>";
+    echo "</td>";
+
+    echo "</tr>";
+
+    echo "<tr>";
+    echo "<td>";
+    echo "<div>imageplaceholder</div>";
+    echo "</td>";
+    echo "</tr>";
+
+    echo "<tr>";
+    // Display a preview of the description (e.g., first 100 characters)
+    $descriptionPreview = substr($row['description'], 0, 100);
+    echo "<td>" . $descriptionPreview . "..." . "</td>";
+    echo "</tr>";
+
+    echo "</table>";
+    echo "</td>";
+
+
+}
+
+echo "</table>";
+
+}
 
 ?>

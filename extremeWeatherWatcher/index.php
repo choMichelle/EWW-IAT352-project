@@ -20,21 +20,14 @@ if (!$weather_event_result) {
     <title> Extreme Weather Watcher</title>
     </head>
     <body>
-    <?php
-        if(isset($_SESSION['userEmail'])){
-            $query = "SELECT username FROM users WHERE userEmail = ?";
-            $stmt = mysqli_prepare($db,$query);
-            mysqli_stmt_bind_param($stmt, "s", $_SESSION['userEmail']);
-            mysqli_stmt_execute($stmt);
-            $result = mysqli_stmt_get_result($stmt);
-            $username = mysqli_fetch_assoc($result);
-            echo "Welcome " . $username['username'];
-            mysqli_stmt_free_result($stmt);
-            mysqli_stmt_close($stmt);
-        }
-        
+    <div class="welcome"> <?php showUsername();?> </div>
+    <div>
+        <h2>Extreme weather events from your country</h2>
+        <?php 
+            showEventBasedOnCountries("United States",5);
+        ?>
+    </div>
 
-    ?>
     <div class="models-container">
         <?php makeCountryDropdown("Country filter","filterCountry","filteredCountry");?>
         <div id = "eventTable">
@@ -56,33 +49,3 @@ if (!$weather_event_result) {
     </body>
 </html>
 
-
-$(document).ready(function() {
-    $('.removeButton').on('click', function(event) {
-        event.preventDefault();
-    
-        var country = $(this).closest('li').attr('data-country');
-        var listItem = $('#' + country);
-    
-        // Show loading indicator
-        listItem.html('Removing...');
-    
-        $.ajax({
-            url: 'removeCountryFromWatchlist.php',
-            type: 'post',
-            data: {removedCountryName: country},
-            success: function(data){
-                if (country) {
-                    listItem.hide('slow', function() {
-                        console.log(country + ' removed successfully.');
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log("Error: " + error);
-                // Handle error and update UI accordingly
-                listItem.html('Error removing country.');
-            }
-        });
-    });
-});
