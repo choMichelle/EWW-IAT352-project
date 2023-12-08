@@ -41,10 +41,8 @@ function saveImages($db, $versionNum) {
             $fileName = pathinfo($file, PATHINFO_FILENAME);
             $filePath = "images/$file";
 
-            // echo '<img src="images/'.$file.'">'; //display image
-            echo '<img src="'.$filePath.'">'; //display image
-
-            $query = "INSERT INTO media VALUES ('null', '$fileName', '$filePath','image', $versionNum)";
+            $query = "INSERT INTO media 
+            VALUES ('null', '$fileName', '$filePath','image', $versionNum)";
 
             //run insert into the table
             mysqli_query($db, $query);
@@ -352,9 +350,11 @@ function showEventBasedOnCountries($country, $count){
 
 function showEventByNewestDate($count) {
     $db = $_SESSION['db'];
-    $query_date = "SELECT * FROM weatherevents
-        INNER JOIN `location` ON weatherevents.locationID = location.locationID
-        ORDER BY `date` DESC";
+    $query_date = "SELECT weatherevents.*, location.*, media.* 
+        FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
+        LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
+        LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
+        ORDER BY weatherevents.date DESC";
     $stmt = mysqli_prepare($db, $query_date);
 
     if ($stmt) {
