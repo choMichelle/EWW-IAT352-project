@@ -3,29 +3,40 @@ body {
 }
 
 .nav-bar {
+    background-color: #333;
+    padding: 2rem;
     display: flex;
-    background-color: lightgrey;
-    padding: 0.5rem;
-}
-
-.nav-bar a {
-    text-decoration: none;
-    font-size: 1.5rem;
+    justify-content: space-around;
 }
 
 .nav-button {
-    padding: 0.5rem;
-    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
 }
 
 .events-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+
     max-width: 100%;
     margin: 1rem auto;
+    margin-left: 10vw;
+    margin-right: 10vw;
     padding: 1rem;
 }
+
+
+.user-country-event-container .event-container-row:nth-child(odd) .event-container {
+    background-color: #eee0e0; 
+}
+
+
+.generic-event-container .event-container-row:nth-child(odd) .event-container {
+    background-color: #eee0e0;
+}
+
+
 
 .models-list-item {
     margin-top: 0.5rem;
@@ -125,17 +136,17 @@ td {
 
 /* Event container styles */
 .event-container {
-    max-width: 450px;
-    margin: 10px;
+    max-width: 45%;
+    margin: 1rem;
     background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    border: 1px solid #000;
 }
 
 /* Event container row styles */
 .event-container-row {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content:center;
 }
 
 /* Event header styles */
@@ -184,4 +195,31 @@ img {
     font-family: 'Courier New', monospace;
 }
 
+.content-row{
+    td:nth-child(1) {
+        width: 25%; 
+
+      }
   
+
+      td:nth-child(2) {
+        width: 75%; 
+
+}
+}
+
+.type-row{
+    td:nth-child(1) {
+        width: 25%; 
+
+      }
+  
+     
+      td:nth-child(2) {
+        width: 75%;
+
+}
+}
+#filterCountry{
+    max-width: 20%;
+}

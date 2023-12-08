@@ -254,7 +254,7 @@ function generateEventPreview($queryResult, $count) {
     echo "<table>";
     for ($i = 0; $i < $count && $row = mysqli_fetch_assoc($queryResult); $i++) {
         
-        if($i % 3 == 0){
+        if($i % 2 == 0){
             echo "<tr class = \"event-container-row\">";
         }
     
@@ -269,7 +269,7 @@ function generateEventPreview($queryResult, $count) {
         // echo "<td><a href=\"eventdetail.php?eventID=". $row['eventID'] ."\" class=\"event-title\">" . "Show more" . "</a></td>";
         echo "</tr>";
     
-        echo "<tr>";
+        echo "<tr class =\"type-row\">";
     
         echo "<td>";
         echo "<div>" . $row['severity'] . "</div>";
@@ -286,13 +286,8 @@ function generateEventPreview($queryResult, $count) {
     
         echo "<table>";
 
-    
-        echo "<tr>";
+        echo "<tr class = \"content-row\">";
         // Display a preview of the description (e.g., first 100 characters)
-        $descriptionPreview = substr($row['description'], 0, 250);
-        echo "<td>" . $descriptionPreview . "... " . "<a href=\"eventdetail.php?eventID=" . $row['eventID']. "\">Read more</a>" . "</td>";
-        echo "</tr>";
-        echo "<tr>";
         echo "<td>";
         echo "<div class=image-container>";
         if (!empty($row['mediaURL'])) {
@@ -304,10 +299,12 @@ function generateEventPreview($queryResult, $count) {
         
         echo "</div>";
         echo "</td>";
+        $descriptionPreview = substr($row['description'], 0, 250);
+        echo "<td>" . $descriptionPreview . "... " . "<a href=\"eventdetail.php?eventID=" . $row['eventID']. "\">Read more</a>" . "</td>";
+        
         echo "</tr>";
 
         echo "</table>";
-        echo "</td>";
     
     
     }
