@@ -135,7 +135,8 @@ td {
 .event-container-row {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    margin-left: 5vw;
+    margin-right: 5vw;
 }
 
 /* Event header styles */
@@ -144,13 +145,28 @@ td {
     color: #fff;
     padding: 5px;
     font-weight: bold;
+
 }
 
+
+
 /* Event title styles */
-.event-title {
+a .event-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+    word-wrap: break-word;
     font-size: 18px;
     font-weight: bold;
-}
+    padding-bottom: 10px;
+    text-decoration: none;
+
+  }
+
+
+  
 
 /* Event content styles */
 .event-content {

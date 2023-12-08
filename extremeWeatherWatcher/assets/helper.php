@@ -262,8 +262,10 @@ function generateEventPreview($queryResult, $count) {
         echo "<td class = \"event-container\">";
         echo "<table class=\"event-header\">";
         echo "<tr>";
-        echo "<td class=\"event-title\">" . $row['title'] . "</td>";
-        echo "<td><a href=\"eventdetail.php?eventID=". $row['eventID'] ."\" class=\"event-title\">" . "Show more" . "</a></td>";
+
+        echo "<a href=\"eventdetail.php?eventID=" . $row['eventID'] . "class=\"event-title\">".$row['title']."</a>";
+        // echo "<td class=\"event-title\">" .  . "</td>";
+        // echo "<td><a href=\"eventdetail.php?eventID=". $row['eventID'] ."\" class=\"event-title\">" . "Show more" . "</a></td>";
         echo "</tr>";
     
         echo "<tr>";
@@ -282,6 +284,13 @@ function generateEventPreview($queryResult, $count) {
         echo "</table class = \"event-content\">";
     
         echo "<table>";
+
+    
+        echo "<tr>";
+        // Display a preview of the description (e.g., first 100 characters)
+        $descriptionPreview = substr($row['description'], 0, 250);
+        echo "<td>" . $descriptionPreview . "... " . "<a href=\"eventdetail.php?eventID=" . $row['eventID']. "\">Read more</a>" . "</td>";
+        echo "</tr>";
         echo "<tr>";
         echo "<td>";
         echo "<div class=image-container>";
@@ -295,13 +304,7 @@ function generateEventPreview($queryResult, $count) {
         echo "</div>";
         echo "</td>";
         echo "</tr>";
-    
-        echo "<tr>";
-        // Display a preview of the description (e.g., first 100 characters)
-        $descriptionPreview = substr($row['description'], 0, 100);
-        echo "<td>" . $descriptionPreview . "..." . "</td>";
-        echo "</tr>";
-    
+
         echo "</table>";
         echo "</td>";
     
