@@ -263,7 +263,7 @@ function generateEventPreview($queryResult, $count) {
         echo "<table class=\"event-header\">";
         echo "<tr>";
 
-        echo "<a href=\"eventdetail.php?eventID=" . $row['eventID'] . "class=\"event-title\">".$row['title']."</a>";
+        echo "<a href=\"eventdetail.php?eventID=" . $row['eventID'] . "\" class=\"event-title\">" . $row['title'] . "</a>";
         // echo "<td class=\"event-title\">" .  . "</td>";
         // echo "<td><a href=\"eventdetail.php?eventID=". $row['eventID'] ."\" class=\"event-title\">" . "Show more" . "</a></td>";
         echo "</tr>";
