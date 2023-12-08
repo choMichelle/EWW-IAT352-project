@@ -8,19 +8,13 @@ SSLtoHTTP();
 
 updateMediaTable(3);
 
-$query_weather_event = "SELECT * FROM weatherevents";
-$weather_event_result = mysqli_query($db,$query_weather_event);
-if (!$weather_event_result) {
-    die("query failed");
-}
-
 ?>
 <html>
     <head>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <title> Extreme Weather Watcher</title>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <title> Extreme Weather Watcher</title>
     </head>
+
     <body>
     <div class="welcome"> <?php showUsername();?> </div>
     <div class = "events-container user-country-event-container">
@@ -44,13 +38,10 @@ if (!$weather_event_result) {
         <div id = "eventTable ">
             <?php
             showEventBasedOnCountries("",12); 
-            
-            mysqli_free_result($weather_event_result);
-            $db->close();
             ?>
         </div>
     </div>
-
+    <?php $db->close(); ?>
     <script src = "js/locationFilter.js" defer></script>    
     </body>
 </html>

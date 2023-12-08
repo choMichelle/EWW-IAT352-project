@@ -5,6 +5,8 @@ include("assets/header.php");
 
 SSLtoHTTP();
 
+updateMediaTable(3);
+
 $invalidID = true;
 
 if(isset($_GET["eventID"])) $eventID = $_GET["eventID"];

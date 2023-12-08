@@ -3,7 +3,7 @@
 $dbhost = "localhost";
 $dbuser = "root";
 $dbpass = "";
-$dbname = "eww_projectdb";
+$dbname = "eww_db_images";
 
 //connect to the db
 $db = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);

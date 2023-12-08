@@ -41,9 +41,6 @@ function saveImages($db, $versionNum) {
             $fileName = pathinfo($file, PATHINFO_FILENAME);
             $filePath = "images/$file";
 
-            // echo '<img src="images/'.$file.'">'; //display image
-            echo '<img src="'.$filePath.'">'; //display image
-
             $query = "INSERT INTO media VALUES ('null', '$fileName', '$filePath','image', $versionNum)";
 
             //run insert into the table
@@ -262,10 +259,8 @@ function generateEventPreview($queryResult, $count) {
         echo "<td class = \"event-container\">";
         echo "<table class=\"event-header\">";
         echo "<tr>";
-
-        echo "<a href=\"eventdetail.php?eventID=" . $row['eventID'] . "\" class=\"event-title\">" . $row['title'] . "</a>";
-        // echo "<td class=\"event-title\">" .  . "</td>";
-        // echo "<td><a href=\"eventdetail.php?eventID=". $row['eventID'] ."\" class=\"event-title\">" . "Show more" . "</a></td>";
+        echo "<td class=\"event-title\">" . $row['title'] . "</td>";
+        echo "<td><a href=\"eventdetail.php?eventID=". $row['eventID'] ."\" class=\"event-title\">" . "Show more" . "</a></td>";
         echo "</tr>";
     
         echo "<tr>";
@@ -284,13 +279,6 @@ function generateEventPreview($queryResult, $count) {
         echo "</table class = \"event-content\">";
     
         echo "<table>";
-
-    
-        echo "<tr>";
-        // Display a preview of the description (e.g., first 100 characters)
-        $descriptionPreview = substr($row['description'], 0, 250);
-        echo "<td>" . $descriptionPreview . "... " . "<a href=\"eventdetail.php?eventID=" . $row['eventID']. "\">Read more</a>" . "</td>";
-        echo "</tr>";
         echo "<tr>";
         echo "<td>";
         echo "<div class=image-container>";
@@ -304,7 +292,13 @@ function generateEventPreview($queryResult, $count) {
         echo "</div>";
         echo "</td>";
         echo "</tr>";
-
+    
+        echo "<tr>";
+        // Display a preview of the description (e.g., first 100 characters)
+        $descriptionPreview = substr($row['description'], 0, 100);
+        echo "<td>" . $descriptionPreview . "..." . "</td>";
+        echo "</tr>";
+    
         echo "</table>";
         echo "</td>";
     
@@ -317,11 +311,17 @@ function generateEventPreview($queryResult, $count) {
 function showEventBasedOnCountries($country, $count){
     $db = $_SESSION['db'];
     if(empty($country)){
-        $query = "SELECT weatherevents.*, location.*, media.* FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID;";
+        $query = "SELECT weatherevents.*, location.*, media.* 
+            FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
+            LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
+            LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID;";
     }
     else{
-    $query = "SELECT weatherevents.*, location.*, media.* FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
-    WHERE location.country = ?;";
+        $query = "SELECT weatherevents.*, location.*, media.* 
+            FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
+            LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
+            LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
+            WHERE location.country = ?;";
     }
     $stmt = mysqli_prepare($db,$query);
     
