@@ -23,11 +23,11 @@ if (!$weather_event_result) {
     </head>
     <body>
     <div class="welcome"> <?php showUsername();?> </div>
-    <div>
+    <div class = "events-container user-country-event-container">
         <?php
         if (isset($_SESSION['userEmail'])) {
             echo "<h2>Extreme weather events from your country</h2>";
-            showEventBasedOnCountries(getUserCountry(),5);
+            showEventBasedOnCountries(getUserCountry(),6);
         }
         else {
             echo "<h2>Latest extreme weather events around the world</h2>";
@@ -36,12 +36,12 @@ if (!$weather_event_result) {
         ?>
     </div>
 
-    <div class="models-container">
+    <div class="events-container generic-event-container">
         
         <h2> Extreme weather around the world</h2>
         <?php makeCountryDropdown("Country filter","filterCountry","filteredCountry");?>
 
-        <div id = "eventTable">
+        <div id = "eventTable ">
             <?php
             showEventBasedOnCountries("",12); 
             

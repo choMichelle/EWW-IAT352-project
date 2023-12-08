@@ -18,7 +18,7 @@ body {
     border-radius: 5px;
 }
 
-.models-container {
+.events-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -169,3 +169,16 @@ td {
     font-style: italic;
     color: #555;
 }
+
+
+img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.monospace-text {
+    font-family: 'Courier New', monospace;
+}
+
+  

@@ -12,16 +12,8 @@ $(document).ready(function() {
             url: 'removeCountryFromWatchlist.php',
             type: 'post',
             data: {removedCountryName: country},
-            success: function(data){
-                if (country) {
-                    listItem.hide();
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log("Error: " + error);
-                // Handle error and update UI accordingly
-                listItem.html('Error removing country.');
-            }
         });
+
+        listItem.remove();
     });
 });

@@ -284,7 +284,15 @@ function generateEventPreview($queryResult, $count) {
         echo "<table>";
         echo "<tr>";
         echo "<td>";
-        echo "<div>imageplaceholder</div>";
+        echo "<div class=image-container>";
+        if (!empty($row['mediaURL'])) {
+            echo "<img src=\"" . $row['mediaURL'] . "\" />";
+        } else {
+            echo "<div class=monospace-text>No image</div>";
+        }
+
+        
+        echo "</div>";
         echo "</td>";
         echo "</tr>";
     
@@ -306,13 +314,11 @@ function generateEventPreview($queryResult, $count) {
 function showEventBasedOnCountries($country, $count){
     $db = $_SESSION['db'];
     if(empty($country)){
-        $query = "SELECT * FROM weatherevents 
-          INNER JOIN `location` ON weatherevents.locationID = location.locationID";
+        $query = "SELECT weatherevents.*, location.*, media.* FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID;";
     }
     else{
-    $query = "SELECT * FROM weatherevents 
-          INNER JOIN `location` ON weatherevents.locationID = location.locationID  
-          WHERE location.country = ?";
+    $query = "SELECT weatherevents.*, location.*, media.* FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
+    WHERE location.country = ?;";
     }
     $stmt = mysqli_prepare($db,$query);
     
@@ -321,8 +327,10 @@ function showEventBasedOnCountries($country, $count){
         if(!empty($country)){
             mysqli_stmt_bind_param($stmt,"s",$country);
         }
+        
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
+
     }
 
     if (mysqli_num_rows($result) <= 0) {
