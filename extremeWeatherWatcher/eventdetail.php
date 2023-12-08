@@ -86,7 +86,7 @@ $eventState = $eventLocationDetails['state'];
     <div><?php echo "Event location: $eventState, $eventCountry, $eventContinent"?></div>
     <div>
         <?php
-        if (((isset($_SESSION['userEmail'])) && !isInWatchlist($eventCountry))){
+        if (isset($_SESSION['userEmail']) && !isInWatchlist($eventCountry)){
             echo "<form action=\"watchlist.php\" method=\"post\">";
             echo "<input type = \"hidden\" name=\"newWatchListCountryName\" value=\"$eventCountry\">";
             echo "<input type=\"submit\" name=\Add country to Watchlist\ value=\"Add country to Watchlist\">";

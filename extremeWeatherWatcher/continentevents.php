@@ -7,13 +7,12 @@ SSLtoHTTP();
 
 updateMediaTable(3);
 
-//need to implement paging (max 10 items per page)
 ?>
 
 <html lang="en">
     <head>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-        <title>EWW - All Weather Events</title>
+        <title>EWW - Weather Events in </title>
     </head>
     <body>
         <div class="events-container generic-event-container">
