@@ -148,8 +148,11 @@ td {
 
 /* Event title styles */
 .event-title {
-    font-size: 18px;
+    display: block;
+    font-size: 26px;
     font-weight: bold;
+    text-decoration: none;
+    height: 80px;
 }
 
 /* Event content styles */
