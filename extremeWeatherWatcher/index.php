@@ -6,6 +6,8 @@ include("assets/header.php");
 
 SSLtoHTTP();
 
+updateMediaTable(3);
+
 $query_weather_event = "SELECT * FROM weatherevents";
 $weather_event_result = mysqli_query($db,$query_weather_event);
 if (!$weather_event_result) {
@@ -36,12 +38,12 @@ if (!$weather_event_result) {
 
     <div class="models-container">
         
-        
-            <h2> Extreme weather around the world</h2>
-            <?php makeCountryDropdown("Country filter","filterCountry","filteredCountry");?>
-        <div id = "eventTable">
-            <?php showEventBasedOnCountries("",12); 
+        <h2> Extreme weather around the world</h2>
+        <?php makeCountryDropdown("Country filter","filterCountry","filteredCountry");?>
 
+        <div id = "eventTable">
+            <?php
+            showEventBasedOnCountries("",12); 
             
             mysqli_free_result($weather_event_result);
             $db->close();

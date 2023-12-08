@@ -1,4 +1,57 @@
 <?php
+//create/update media table
+function updateMediaTable($versionNum) {
+    $db = $_SESSION['db'];
+
+    //query table version number
+    $query_version = "SELECT tableVersion FROM media";
+    $result = mysqli_query($db, $query_version);
+
+    if (!$result) {
+        die("unable to query media table version");
+    }
+
+    if (mysqli_num_rows($result) != 0) {
+        $row = mysqli_fetch_assoc($result);
+        $currVersionNum = $row['tableVersion'];
+
+        if ($versionNum > $currVersionNum || $currVersionNum = null) {
+            //delete all currently saved images from db table
+            $query_delete = "DELETE FROM media where tableVersion=$currVersionNum";
+            mysqli_query($db, $query_delete);
+
+            saveImages($db, $versionNum);
+        }
+        mysqli_free_result($result);
+    }
+    else {
+        saveImages($db, $versionNum);
+    }
+    
+}
+
+//save images in folder to db, called in updateMediaTable
+function saveImages($db, $versionNum) {
+    //prepare files to save
+    $dir = new DirectoryIterator("images/");
+    foreach ($dir as $fileinfo) { //loop through all files in images/ directory
+        if (!$fileinfo->isDot()) { //exclude directory items, . items, .. items
+            $file = $fileinfo->getFilename(); //get the file
+
+            $fileName = pathinfo($file, PATHINFO_FILENAME);
+            $filePath = "images/$file";
+
+            // echo '<img src="images/'.$file.'">'; //display image
+            echo '<img src="'.$filePath.'">'; //display image
+
+            $query = "INSERT INTO media VALUES ('null', '$fileName', '$filePath','image', $versionNum)";
+
+            //run insert into the table
+            mysqli_query($db, $query);
+        }
+    }
+}
+
 //force page to use HTTPS
 function require_SSL() {
     if ($_SERVER["HTTPS"] != "on") {
