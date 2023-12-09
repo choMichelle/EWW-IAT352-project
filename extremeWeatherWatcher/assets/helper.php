@@ -145,7 +145,24 @@ function makeCountryDropdown($label,$htmlID,$varname){
     mysqli_free_result($all_countries_result);
 }
 
+//for header's "Event by continent"
+function generateDropdownItem() {
+    $db = $_SESSION['db'];
+    $query_all_countries = "SELECT DISTINCT location.country FROM location";
+    $all_countries_result = mysqli_query($db,$query_all_countries);
+    if (!$all_countries_result) {
+        die("query failed");
+    }
 
+    if(mysqli_num_rows($all_countries_result) != 0){
+        while($row = mysqli_fetch_assoc($all_countries_result)){
+            $currCountry = $row['country'];
+            echo "<a href=\"continentevents.php?country=$currCountry\"><div>$currCountry</div></a>";
+        }
+    }
+
+    mysqli_free_result($all_countries_result);
+}
 
 
 // function showUserWatchlist($userEmail){

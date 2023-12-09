@@ -27,7 +27,8 @@ updateMediaTable(3);
                 ?>
             </div>
         </div>
-        <?php $db->close(); ?>
-        <script src = "js/locationFilter.js" defer></script> 
+        
     </body>
+    <?php $db->close(); ?>
+    <script src = "js/locationFilter.js" defer></script> 
 </html>

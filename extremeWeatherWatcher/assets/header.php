@@ -10,7 +10,12 @@
 
             <a href="allevents.php"><div class="nav-button">Show All Events</div></a> 
 
-            <a href="index.php"><div class="nav-button">Events by Continent</div></a>
+            <div class="nav-button" id="dropdown-continents">
+                <div class="dropbtn">Dropdown</div>
+                <div class="dropdown-content">
+                    <?php generateDropdownItem() ?>
+                </div>
+            </div>
 
             <?php
                 if(isset($_SESSION['userEmail'])) {

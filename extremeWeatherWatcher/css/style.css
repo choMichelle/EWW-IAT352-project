@@ -4,15 +4,19 @@ body {
 
 .nav-bar {
     background-color: #333;
-    padding: 2rem;
     display: flex;
     justify-content: space-around;
 }
 
 .nav-button {
+    padding: 2rem;
     color: white;
     text-decoration: none;
     font-size: 16px;
+}
+
+.nav-button:hover {
+    color: grey;
 }
 
 .events-container {
@@ -222,4 +226,50 @@ img {
 }
 #filterCountry{
     max-width: 20%;
+}
+
+#dropdown-continents {
+    display: block;
+    position: relative;
+    color: white;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    width: 100%;
+    max-height: 10rem;
+    overflow-y: scroll;
+}
+
+.dropdown-content div {
+    padding: 0.5rem 1rem;
+    border-bottom-style: solid;
+    border-bottom: #000;
+}
+
+.dropdown-content a {
+    color: black;
+    text-decoration: none;
+}
+
+#dropdown-continents:hover {
+    color: grey; 
+}
+
+#dropdown-continents:hover .dropdown-content {
+    display: block;
+    background-color:#ddd;
+    color:#777;
+}
+
+.dropdown-content:hover {
+    display: block;
+    background-color:#ddd;
+    color:#777;
+}
+
+.dropdown-content div:hover {
+    background-color: #000;
+    color: white;
 }
