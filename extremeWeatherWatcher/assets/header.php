@@ -11,7 +11,7 @@
             <a href="allevents.php"><div class="nav-button">Show All Events</div></a> 
 
             <div class="nav-button" id="dropdown-continents">
-                <div class="dropbtn">Dropdown</div>
+                <div class="dropbtn">Events by Continent</div>
                 <div class="dropdown-content">
                     <?php generateDropdownItem() ?>
                 </div>

@@ -148,20 +148,20 @@ function makeCountryDropdown($label,$htmlID,$varname){
 //for header's "Event by continent"
 function generateDropdownItem() {
     $db = $_SESSION['db'];
-    $query_all_countries = "SELECT DISTINCT location.country FROM location";
-    $all_countries_result = mysqli_query($db,$query_all_countries);
-    if (!$all_countries_result) {
+    $query_all_cont = "SELECT DISTINCT location.continent FROM location";
+    $all_cont_result = mysqli_query($db, $query_all_cont);
+    if (!$all_cont_result) {
         die("query failed");
     }
 
-    if(mysqli_num_rows($all_countries_result) != 0){
-        while($row = mysqli_fetch_assoc($all_countries_result)){
-            $currCountry = $row['country'];
-            echo "<a href=\"continentevents.php?country=$currCountry\"><div>$currCountry</div></a>";
+    if(mysqli_num_rows($all_cont_result) != 0){
+        while($row = mysqli_fetch_assoc($all_cont_result)){
+            $currCont = $row['continent'];
+            echo "<a href=\"continentevents.php?continent=$currCont\"><div>$currCont</div></a>";
         }
     }
 
-    mysqli_free_result($all_countries_result);
+    mysqli_free_result($all_cont_result);
 }
 
 
@@ -330,11 +330,19 @@ function generateEventPreview($queryResult, $count) {
 function showEventBasedOnCountries($country, $count){
     $db = $_SESSION['db'];
     if(empty($country)){
-        $query = "SELECT weatherevents.*, location.*, media.* FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID;";
+        $query = "SELECT weatherevents.*, location.*, media.* 
+        FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
+        LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
+        LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
+        ORDER BY weatherevents.date DESC";
     }
     else{
-    $query = "SELECT weatherevents.*, location.*, media.* FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
-    WHERE location.country = ?;";
+        $query = "SELECT weatherevents.*, location.*, media.* 
+        FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
+        LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
+        LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
+        WHERE location.country = ?
+        ORDER BY weatherevents.date DESC";
     }
     $stmt = mysqli_prepare($db,$query);
     
@@ -379,6 +387,39 @@ function showEventByNewestDate($count) {
     if (mysqli_num_rows($result) > 0) {
         generateEventPreview($result, $count);
     }
+}
+
+function showEventBasedOnContinent($continent, $count){
+    $db = $_SESSION['db'];
+    $query = "SELECT weatherevents.*, location.*, media.* 
+        FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
+        LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
+        LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
+        WHERE location.continent = ?
+        ORDER BY weatherevents.date DESC";
+    $stmt = mysqli_prepare($db,$query);
+
+    if($stmt){
+        if(!empty($continent)){
+            mysqli_stmt_bind_param($stmt,"s",$continent);
+        }
+        
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+    }
+
+    if (mysqli_num_rows($result) <= 0) {
+        echo "<table>";
+        echo "<tr><td>Nothing to show here</td></tr>";
+        mysqli_free_result($result);
+        echo "</table>";
+        return;
+    }
+    else {
+        generateEventPreview($result, $count);
+    }
+
 }
 
 ?>
