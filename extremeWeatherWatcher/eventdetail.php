@@ -30,22 +30,13 @@ if (mysqli_num_rows($weather_eventID_result) != 0) {
 mysqli_free_result($weather_eventID_result);
 
 //get weather event details
-$query_event = "SELECT * FROM weatherevents WHERE eventID = ?";
-$stmt_event = mysqli_prepare($db, $query_event);
-
-if(!$stmt_event){
-    die("Error:" .mysqli_error($db));
-}
-
 if ($invalidID) {
     echo "Event not found.";
     exit;
 }
-else{
-    mysqli_stmt_bind_param($stmt_event,"i",$eventID);
-    mysqli_stmt_execute($stmt_event);
+else {
 
-    $result = mysqli_stmt_get_result($stmt_event);
+    $result = getSpecificEventDetails($eventID);
 
     if(mysqli_num_rows($result) != 0){
         while ($row = mysqli_fetch_assoc($result)){
@@ -55,18 +46,15 @@ else{
             $eventTitle = $row['title'];
             $eventType = $row['type'];
             $eventSeverity = $row['severity'];
-            $eventLocationID = $row['locationID'];
+            $eventContinent = $row['continent'];
+            $eventCountry = $row['country'];
+            $eventState = $row['stateOrProvince'];
+            $eventImage = $row['mediaURL'];
         }
     }
 }
 
 mysqli_free_result($result);
-
-//get the location of the event
-$eventLocationDetails = getEventLocation($db, $eventLocationID);
-$eventContinent = $eventLocationDetails['continent'];
-$eventCountry = $eventLocationDetails['country'];
-$eventState = $eventLocationDetails['state'];
 
 ?>
 
@@ -79,6 +67,15 @@ $eventState = $eventLocationDetails['state'];
 </head>
 <body>
     <div><?php echo "<h1>$eventTitle</h1>"; ?></div>
+    <div class=image-container>
+        <?php
+            if (!empty($eventImage)) {
+                echo "<img src=\"" . $eventImage . "\" />";
+            } else {
+                echo "<div class=monospace-text>No image</div>";
+            }
+        ?>        
+    </div>
     <div><?php echo "Event type: $eventType"; ?></div>
     <div><?php echo "Event severity: $eventSeverity"; ?></div>
     <div><?php echo "Event date: $eventDate"; ?></div>

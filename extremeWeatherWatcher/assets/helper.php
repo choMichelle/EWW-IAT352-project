@@ -249,6 +249,7 @@ function showUsername(){
     }
 }
 
+//retrieve the user's home country
 function getUserCountry(){
     $db = $_SESSION['db'];
     if(isset($_SESSION['userEmail'])){
@@ -265,6 +266,7 @@ function getUserCountry(){
     }
 }
 
+//creates a brief preview of a weather event
 function generateEventPreview($queryResult, $count) {
     echo "<table>";
     for ($i = 0; $i < $count && $row = mysqli_fetch_assoc($queryResult); $i++) {
@@ -321,12 +323,12 @@ function generateEventPreview($queryResult, $count) {
 
         echo "</table>";
     
-    
     }
     
     echo "</table>";
 }
 
+//show specified number of weather events for a specific country
 function showEventBasedOnCountries($country, $count){
     $db = $_SESSION['db'];
     if(empty($country)){
@@ -370,25 +372,7 @@ function showEventBasedOnCountries($country, $count){
 
 }
 
-function showEventByNewestDate($count) {
-    $db = $_SESSION['db'];
-    $query_date = "SELECT weatherevents.*, location.*, media.* 
-        FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
-        LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
-        LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
-        ORDER BY weatherevents.date DESC";
-    $stmt = mysqli_prepare($db, $query_date);
-
-    if ($stmt) {
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-    }
-
-    if (mysqli_num_rows($result) > 0) {
-        generateEventPreview($result, $count);
-    }
-}
-
+//show specified number of weather events for a specific continent, ordered from newest to oldest
 function showEventBasedOnContinent($continent, $count){
     $db = $_SESSION['db'];
     $query = "SELECT weatherevents.*, location.*, media.* 
@@ -420,6 +404,80 @@ function showEventBasedOnContinent($continent, $count){
         generateEventPreview($result, $count);
     }
 
+}
+
+//show specified number of weather events (from all) from newest to oldest
+function showEventByNewestDate($count) {
+    $db = $_SESSION['db'];
+    $query_date = "SELECT weatherevents.*, location.*, media.* 
+        FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
+        LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
+        LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
+        ORDER BY weatherevents.date DESC";
+    $stmt = mysqli_prepare($db, $query_date);
+
+    if ($stmt) {
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    }
+
+    if (mysqli_num_rows($result) > 0) {
+        generateEventPreview($result, $count);
+    }
+}
+
+//show specified number of weather events for a specific continent, ordered from newest to oldest
+function showEventBasedOnWatchlist($count){
+    $db = $_SESSION['db'];
+    $userEmail = $_SESSION['userEmail'];
+
+    $query = "SELECT weatherevents.*, location.*, media.* 
+        FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
+        LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
+        LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
+        LEFT JOIN `watchlist` ON location.country = watchlist.country
+        WHERE watchlist.userEmail = ?
+        ORDER BY weatherevents.date DESC";
+    $stmt = mysqli_prepare($db, $query);
+
+    if($stmt){
+        mysqli_stmt_bind_param($stmt,"s",$userEmail);
+        
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    }
+
+    if (mysqli_num_rows($result) <= 0) {
+        echo "<table>";
+        echo "<tr><td>Nothing to show here</td></tr>";
+        mysqli_free_result($result);
+        echo "</table>";
+        return;
+    }
+    else {
+        generateEventPreview($result, $count);
+    }
+
+}
+
+//get details of 1 event, for event details page
+function getSpecificEventDetails($eventID) {
+    $db = $_SESSION['db'];
+
+    $query = "SELECT weatherevents.*, location.*, media.* 
+        FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
+        LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
+        LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
+        WHERE weatherevents.eventID = ?
+        ORDER BY weatherevents.date DESC";
+    $stmt = mysqli_prepare($db, $query);
+
+    if($stmt){
+        mysqli_stmt_bind_param($stmt,"i",$eventID);
+        
+        mysqli_stmt_execute($stmt);
+        return mysqli_stmt_get_result($stmt);
+    }
 }
 
 ?>
