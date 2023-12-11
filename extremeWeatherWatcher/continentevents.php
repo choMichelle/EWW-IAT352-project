@@ -44,7 +44,7 @@ mysqli_free_result($cont_result);
 
             <div id="eventTable ">
                 <?php
-                showEventBasedOnContinent($selectedCont, 9); 
+                showEventBasedOnContinent($selectedCont, 10, 10); 
                 ?>
             </div>
         </div>

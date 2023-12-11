@@ -21,7 +21,7 @@ updateMediaTable(3);
         <?php
         if (isset($_SESSION['userEmail'])) {
             echo "<h2>Extreme weather events from your country</h2>";
-            showEventBasedOnCountries(getUserCountry(),4);
+            showEventBasedOnCountries(getUserCountry(), 4, 10);
 
             echo "<h2>Extreme weather events from your watched countries</h2>";
             showEventBasedOnWatchlist(4);

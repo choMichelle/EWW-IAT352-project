@@ -7,7 +7,27 @@ SSLtoHTTP();
 
 updateMediaTable(3);
 
-//need to implement paging (max 10 items per page)
+//get current page number
+if (isset($_GET['page'])) {
+    $page_num = $_GET['page'];
+}
+else {
+    $page_num = 1;
+}
+
+$limit = 10; //max number of events to show on page
+$start_from = ($page_num - 1) * $limit;
+
+//get number of records 
+$sql = "SELECT COUNT(*) FROM weatherevents";   
+$rs_result = mysqli_query($db, $sql);   
+$row = mysqli_fetch_row($rs_result);   
+$total_records = $row[0];   
+    
+//find number of pages required to show all records
+$total_pages = ceil($total_records / $limit);   
+$page_link = "";                         
+
 ?>
 
 <html lang="en">
@@ -23,10 +43,25 @@ updateMediaTable(3);
 
             <div id="eventTable ">
                 <?php
-                showEventBasedOnCountries("",10); 
+                showEventBasedOnCountries("", 10, $limit, $start_from); 
                 ?>
             </div>
+            
         </div>
+
+        <ul class="page-numbers">
+            <?php
+            for ($i = 1; $i <= $total_pages; $i++) { 
+                if ($i == $page_num) { //page we are currently on
+                    $page_link .= "<li class='active'><a href='allevents.php?page=".$i."'>".$i."</a></li>"; 
+                }             
+                else { 
+                    $page_link .= "<li><a href='allevents.php?page=".$i."'>".$i."</a></li>";   
+                } 
+            }
+            echo $page_link;
+            ?>
+        </ul>
         
     </body>
     <?php $db->close(); ?>

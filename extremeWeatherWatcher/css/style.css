@@ -228,6 +228,9 @@ img {
     max-width: 20%;
 }
 
+
+/* styling for "events by continent" dropdown */
+
 #dropdown-continents {
     display: block;
     position: relative;
@@ -272,4 +275,19 @@ img {
 .dropdown-content div:hover {
     background-color: #000;
     color: white;
+}
+
+/* styling for page numbers */
+.page-numbers {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 1rem 0;
+    padding: 0;
+}
+
+.page-numbers > li {
+    list-style-type: none;
+    padding: 0 1rem;
+    font-size: 1.5rem;
 }

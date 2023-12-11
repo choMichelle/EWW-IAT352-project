@@ -329,14 +329,14 @@ function generateEventPreview($queryResult, $count) {
 }
 
 //show specified number of weather events for a specific country
-function showEventBasedOnCountries($country, $count){
+function showEventBasedOnCountries($country, $count, $limit, $start_from=0){
     $db = $_SESSION['db'];
     if(empty($country)){
         $query = "SELECT weatherevents.*, location.*, media.* 
         FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
         LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
         LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
-        ORDER BY weatherevents.date DESC";
+        ORDER BY weatherevents.date DESC LIMIT $start_from,$limit";
     }
     else{
         $query = "SELECT weatherevents.*, location.*, media.* 
@@ -373,14 +373,14 @@ function showEventBasedOnCountries($country, $count){
 }
 
 //show specified number of weather events for a specific continent, ordered from newest to oldest
-function showEventBasedOnContinent($continent, $count){
+function showEventBasedOnContinent($continent, $count, $limit, $start_from=0){
     $db = $_SESSION['db'];
     $query = "SELECT weatherevents.*, location.*, media.* 
         FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
         LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID 
         LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID
         WHERE location.continent = ?
-        ORDER BY weatherevents.date DESC";
+        ORDER BY weatherevents.date DESC LIMIT $start_from,$limit";
     $stmt = mysqli_prepare($db,$query);
 
     if($stmt){
