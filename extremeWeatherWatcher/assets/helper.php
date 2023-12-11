@@ -85,10 +85,12 @@ function makeTextEntry($type, $label, $text, $varname) {
     echo " />";
 }
 
+//create a list item - is this unused? can we delete
 function addListItem($itemName, $itemID, $itemLocation) {
     echo "<a href=\"eventdetail.php?eventID=$itemID\" class=\"list-anchor\"><div class=\"models-list-item\">"  . $itemLocation['continent'] . " - " . $itemLocation['country']  . ": " .  "$itemName</div></a>";
 }
 
+//check if a country is in the watchlist for a specific user
 function isInWatchlist($country){
     if(!isset($_SESSION['db'])){
         echo "can't fetch database";
@@ -110,6 +112,7 @@ function isInWatchlist($country){
     }
 }
 
+//add country to db (watchlist)
 function addItemToWatchList($country){
     $db = $_SESSION['db'];
     //GPT taught me INSERT IGNORE INTO
@@ -125,6 +128,7 @@ function addItemToWatchList($country){
     
 }
 
+//creates country dropdown list for filtering
 function makeCountryDropdown($label,$htmlID,$varname){
     $db = $_SESSION['db'];
     $query_all_countries = "SELECT DISTINCT location.country FROM location";
@@ -234,6 +238,7 @@ function showWatchlistWithRemoveButton(){
     }
 }
 
+//retrieves and shows a welcome text w/ the user's username
 function showUsername(){
     $db = $_SESSION['db'];
     if(isset($_SESSION['userEmail'])){
@@ -373,6 +378,7 @@ function showEventBasedOnCountries($country, $count, $limit, $start_from=0){
 }
 
 //show specified number of weather events for a specific continent, ordered from newest to oldest
+//limit and start_from variables used for pagination
 function showEventBasedOnContinent($continent, $count, $limit, $start_from=0){
     $db = $_SESSION['db'];
     $query = "SELECT weatherevents.*, location.*, media.* 

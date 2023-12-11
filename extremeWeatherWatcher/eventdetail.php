@@ -29,7 +29,7 @@ if (mysqli_num_rows($weather_eventID_result) != 0) {
 
 mysqli_free_result($weather_eventID_result);
 
-//get weather event details
+//get weather event details if ID is valid
 if ($invalidID) {
     echo "Event not found.";
     exit;

@@ -7,7 +7,6 @@ SSLtoHTTP();
 ?>
 
 
-
 <html lang="en">
     <head>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -20,10 +19,10 @@ SSLtoHTTP();
                     addItemToWatchList($_POST['newWatchListCountryName']);
                     unset($_POST['newWatchListCountryName']);
                 }
-        }
+            }
             showWatchlistWithRemoveButton();
         }
-        else{
+        else {
             $_SESSION['callback_url'] = 'watchlist.php';
             header("Location: login.php");
         }
