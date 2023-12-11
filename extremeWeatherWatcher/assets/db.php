@@ -3,7 +3,7 @@
 $dbhost = "localhost";
 $dbuser = "root";
 $dbpass = "";
-$dbname = "eww_db_images";
+$dbname = "extremeweatherwatcher";
 
 //connect to the db
 $db = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
