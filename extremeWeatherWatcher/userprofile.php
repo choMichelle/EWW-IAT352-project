@@ -5,7 +5,7 @@ include("assets/header.php");
 
 SSLtoHTTP();
 
-//place to change user info?
+//place to change user info (excl. email)
 ?>
 
 <html lang="en">
