@@ -28,6 +28,8 @@ $total_records = $row[0];
 $total_pages = ceil($total_records / $limit);   
 $page_link = "";                         
 
+if(isset($_POST['filterCountryName'])) $filterCountryName = $_POST['filterCountryName'];
+
 ?>
 
 <html lang="en">
@@ -39,25 +41,31 @@ $page_link = "";
         <div class="events-container generic-event-container">
             
             <h2> Extreme weather around the world</h2>
-            <?php makeCountryDropdown("Country filter","filterCountry","filteredCountry");?>
+            <?php makeCountryDropdown("Country filter","filterCountry","filterCountryName");?>
 
             <div id="eventTable ">
                 <?php
-                showEventBasedOnCountries("", 10, $limit, $start_from); 
+                    echo "<div id=\"resultContainer\">";
+                    echo "</div>";
+                    echo "not else";
                 ?>
             </div>
             
         </div>
+        
 
         <ul class="page-numbers">
             <?php
-            for ($i = 1; $i <= $total_pages; $i++) { 
-                if ($i == $page_num) { //page we are currently on
-                    $page_link .= "<li class='active'><a href='allevents.php?page=".$i."'>".$i."</a></li>"; 
-                }             
-                else { 
-                    $page_link .= "<li><a href='allevents.php?page=".$i."'>".$i."</a></li>";   
-                } 
+            if(!isset($_POST['filterCountryName']) || empty($_POST['filterCountryName']))
+            {
+                for ($i = 1; $i <= $total_pages; $i++) { 
+                    if ($i == $page_num) { //page we are currently on
+                        $page_link .= "<li class='active'><a href='allevents.php?page=".$i."'>".$i."</a></li>"; 
+                    }             
+                    else { 
+                        $page_link .= "<li><a href='allevents.php?page=".$i."'>".$i."</a></li>";   
+                    } 
+                }
             }
             echo $page_link;
             ?>
