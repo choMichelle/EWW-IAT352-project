@@ -40,6 +40,7 @@ if (isset($_POST['submit']) && ($_POST['submit'] == "Update Profile")) {
         mysqli_stmt_bind_param($stmt, "sss", $username, $country, $_SESSION['userEmail']);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+        echo '<script type="text/javascript">alert("Update profile success");</script>';
     } else {
         $errormsg = "Fields can't be empty";
     }
