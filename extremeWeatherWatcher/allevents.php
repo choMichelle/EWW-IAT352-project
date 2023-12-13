@@ -47,7 +47,6 @@ if(isset($_POST['filterCountryName'])) $filterCountryName = $_POST['filterCountr
                 <?php
                     echo "<div id=\"resultContainer\">";
                     echo "</div>";
-                    echo "not else";
                 ?>
             </div>
             

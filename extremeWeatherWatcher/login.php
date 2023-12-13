@@ -48,19 +48,27 @@ if (!empty($_POST['submit'])) {
         <title>Log in</title>
     </head>
     <body>
-    <?php if (!empty($errormsg))
+        <h1> Log in</h1>
+
+       
+        <form class="standalone-form-1-col" action="login.php" method="POST">
+        <table >
+
+            <td>
+            <?php if (!empty($errormsg))
        echo "<div class=\"errormsg\"style=\"color: red;\"> $errormsg</div>"
-    ?>
-        <form action="login.php" method="POST">
+    ?> 
             <label for="email">Email: </label>
             <input type="text" id="userEmail" name="userEmail" />
 
             <label for="password">Password: </label>
-            <input type="password" id="password" name="password" />
+            <input type="password" id="password" name="password" /><br><br>
 
-            <input type="submit" class="button" name="submit"/>
+            <br><input type="submit" class="button" name="submit"/><br><br>
             <a href="register.php"><div>Register here</div></a>
+</td>    
+        </table>
         </form>
-        
+
     </body>
 </html>

@@ -41,7 +41,7 @@
                     echo "<a href=\"assets/logout.php\"><div class=\"nav-button\">Log out</div></a>";
                 }
                 else {
-                    echo "<a href=\"login.php\"><div class=\"nav-button\">Log in</div></a>";
+                    echo "<a href=\"login.php\"><div class=\"nav-button\">Log in/Register</div></a>";
                 }
 
             ?>

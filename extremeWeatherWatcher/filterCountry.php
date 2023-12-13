@@ -21,5 +21,4 @@ else{
   }
   
 }
-echo "Startfrom".$_POST['page'];
 ?>

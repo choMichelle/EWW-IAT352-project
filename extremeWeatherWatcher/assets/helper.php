@@ -124,7 +124,7 @@ function makeWatchlistButton($eventCountry){
         echo "<input type=\"submit\" class=\"button\" name=\"Add country to Watchlist\" value=\"Add country to Watchlist\">";
         echo "</form>";
     } else if (isset($_SESSION['userEmail'])) {
-        echo "The country of this event is already in your watchlist";
+        echo "<input type=\"submit\" class=\"deactivated-button\" name=\"Add country to Watchlist\" value=\"Country is already in watchlist\">";
     } else {
         echo "Log in to add this event's country to your watchlist.";
     }
@@ -154,7 +154,7 @@ function makeCountryDropdown($label,$htmlID,$varname,$isPrefilled = false){
     if (!$all_countries_result) {
         die("query failed");
     }
-    echo "<label for=\"$htmlID\">$label:</label>";
+    echo "<label class = \"filterCountryLabel\"for=\"$htmlID\">$label:</label>";
     echo "<select id=\"$htmlID\" name=\"$varname\">";
     echo "<option value=\"\"></option>";
     if(mysqli_num_rows($all_countries_result) != 0 && $isPrefilled == false){
@@ -254,6 +254,7 @@ function showWatchlistWithRemoveButton(){
         $result = mysqli_stmt_get_result($stmt);
     
         echo "<table class=\"watchlist-container\">";
+        echo "<thead><tr><th>Country</th></tr></thead>";
         echo "<tbody>";
     
         while ($country = mysqli_fetch_assoc($result)) {

@@ -10,9 +10,11 @@ body {
 }
 
 .dropbtn{
-    display: block;
-    margin: auto;
-    padding-top: 1.6rem;
+
+display: flex;
+align-items: center;
+justify-content: center;
+height: 100%;
 }
 
 .nav-bar a, .dropbtn{
@@ -132,13 +134,13 @@ a .nav-button{
 }
 
 form {
-    max-width: 400px;
     background-color: #fff;
 }
 
 label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
 }
 
 .errormsg {
@@ -211,10 +213,10 @@ td {
 /* Event title styles */
 .event-title {
     display: block;
-    font-size: 26px;
+    font-size:1.2rem;
     font-weight: bold;
     color:black;
-    height: 80px;
+    margin-bottom: 1rem
 }
 
 /* Event content styles */
@@ -349,12 +351,10 @@ h2 {
     margin-left: 2rem;
 }
 
-label{
-    margin-left: 2rem;
-}
+
 
 h1{
-    margin-top: 5rem;
+    margin-top: 3rem;
     text-align: center;
 }
 
@@ -389,12 +389,50 @@ h1{
 
 .watchlist-container tr td:nth-child(1){
     width: 75%;
+    padding-left: 2rem;
 }
 
 .watchlist-container tr td:nth-child(2){
     width: 25%;
 }
 
-.removeButton{
 
+.standalone-form table{
+    width: 60vw;
+    margin: auto;
+}
+
+.bold-text{
+    font-weight: 700;
+}
+
+.location-container *{
+    border: none;
+    margin: 0px;
+}
+
+.location-container{
+    margin: 0px;
+}
+
+.deactivated-button {
+
+    background-color: #ddd; 
+    color: #666;
+    cursor: not-allowed; 
+}
+
+.filterCountryLabel{
+    color: gray;
+    margin-left: 2rem
+}
+
+.standalone-form-1-col{
+    width: 30vw;
+    margin: auto;
+}
+
+.standalone-form-1-col td .filterCountryLabel{
+    margin-left: 0;
+    color: black;
 }

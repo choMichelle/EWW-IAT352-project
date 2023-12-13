@@ -85,18 +85,18 @@ mysqli_free_result($result);
         <td>
             <table>
                 <tr>
-                    <td><?php echo "Event type: $eventType"; ?></td>
+                    <td class = "bold-text"><?php echo "Event type: $eventType"; ?></td>
                 </tr>
                 <tr>
-                    <td><?php echo "Event severity: $eventSeverity"; ?></td>
+                    <td class = "bold-text"><?php echo "Event severity: $eventSeverity"; ?></td>
                 </tr>
                 <tr>
-                    <td><?php echo "Event date: $eventDate"; ?></td>
+                    <td class = "bold-text"><?php echo "Event date: $eventDate"; ?></td>
                 </tr>
                 <!-- Need to fix locationID -->
                 <tr>
                     <td>
-                    <table>
+                    <table class = "location-container">
                         <td><?php echo "State: $eventState"?></td>
                         <td><?php echo "Continent: $eventContinent"?></td>
                        
@@ -105,7 +105,7 @@ mysqli_free_result($result);
                 </tr>
                 <tr>
                     <td>
-                        <table>
+                        <table class = "location-container">
                         <td><?php echo "Country: $eventCountry"?></td>
                         <td><?php makeWatchlistButton($eventCountry);?></td>
                         </table>

@@ -12,6 +12,7 @@ SSLtoHTTP();
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     </head>
     <body>
+        <h1>Your Watchlist</h1>
         <?php
         if (isset($_SESSION['userEmail'])) {    
             if ($_SERVER['REQUEST_METHOD'] === 'POST'){

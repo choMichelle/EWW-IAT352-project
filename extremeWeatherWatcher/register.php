@@ -29,9 +29,7 @@ if (validateTextInput('username') && validateTextInput('userEmail') && validateT
 else {
     $errormsg =  "Please fill in all fields.";
 }
-if (!empty($errormsg)){
-    echo "<div class=\"errormsg\"style=\"color: red;\"> $errormsg</div>";
-}
+
 
 if (!empty($_POST["submit"])) {
     if ($allInputValid) {
@@ -46,7 +44,7 @@ if (!empty($_POST["submit"])) {
         if ($emails_result) {
             $row = mysqli_fetch_assoc($emails_result);
             if ($row['count'] > 0) {
-                echo "An account already exists for this email.";
+                $errormsg = "An account already exists for this email.";
             }
             else {
                 $postedEmail = $_POST['userEmail'];
@@ -67,7 +65,7 @@ if (!empty($_POST["submit"])) {
                     exit;
                 }
                 else {
-                    echo "unable to add user";
+                    $errormsg = "unable to add user";
                 }
             }
         }
@@ -82,17 +80,23 @@ if (!empty($_POST["submit"])) {
     <title>Register account</title>
 </head>
 <body>
-    <form action="register.php" method="POST">
-        
+    <h1>Register</h1>
+    <form class= "standalone-form-1-col" action="register.php" method="POST">
+        <table>
+            <td>
         <?php 
+        if (!empty($errormsg)){
+            echo "<div class=\"errormsg\"style=\"color: red;\"> $errormsg</div>";
+        }
             makeTextEntry('text', 'username', 'Username', 'username');
             makeTextEntry('text', 'email', 'Email', 'userEmail');
             makeCountryDropdown("Your home country","","country");
             makeTextEntry('password', 'password', 'Password', 'password');
             makeTextEntry('password', 'passwordConfirm', 'Confirm password', 'passwordConfirm'); 
         ?>
-        <input type="submit" class="button" name="submit"/>
-
+        <br><br><br><input type="submit" class="button" name="submit"/>
+</td>
+</table>
     </form>
     
 </body>

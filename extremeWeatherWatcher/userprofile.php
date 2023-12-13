@@ -26,9 +26,8 @@ if ($row = mysqli_fetch_assoc($userResult)) {
     exit();
 }
 
-if (isset($_POST['submit']) && ($_POST['submit'] == "changeInfo")) {
+if (isset($_POST['submit']) && ($_POST['submit'] == "Update Profile")) {
     if (validateTextInput('username') && validateTextInput('country')) {
-        echo "bunga";
         $username = $_POST['username'];
         $country = $_POST['country'];
 
@@ -42,12 +41,9 @@ if (isset($_POST['submit']) && ($_POST['submit'] == "changeInfo")) {
     }
 }
 
-if (isset($_POST['submit']) && ($_POST['submit'] == "changePassword")) {
+if (isset($_POST['submit']) && ($_POST['submit'] == "Update Password")) {
     if (validateTextInput('password') && validateTextInput('passwordConfirm') && validateTextInput('newpassword')) {
 
-        echo "\nold: $hashedPassword";
-        echo "<br>";
-        echo "\noldenter:" . sha1($_POST['password']);
         if (sha1($_POST['password']) == $hashedPassword){
             if($_POST['passwordConfirm'] == $_POST['newpassword'])
             {
@@ -93,17 +89,25 @@ mysqli_stmt_close($userStmt);
 </head>
 
 <body>
-    <h2>Edit Profile</h2>
+    <h1>Edit Profile</h1>
     <?php if (!empty($errormsg)) : ?>
         <div class="errormsg" style="color: red;"><?php echo $errormsg; ?></div>
     <?php endif; ?>
-    <form action="userprofile.php" method="POST">
+    <form class= "standalone-form" action="userprofile.php" method="POST">
+        
+        <table>
+        <td>
         <h3>Change user info</h3>
         <?php
+
         makeTextEntry('text','username',"Username",'username',true);
         makeCountryDropdown("Your home country","","country",true);
         ?>
-        <input type="submit" class="button" name="submit" value="changeInfo"/>
+        <br><br><br><br><br>
+        <input type="submit" class="button" name="submit" value="Update Profile"/>
+    </td>
+
+        <td>
         <h3>Change password</h3>
         <?php
         makeTextEntry('password', 'password', 'Old Password', 'password');
@@ -111,9 +115,11 @@ mysqli_stmt_close($userStmt);
         makeTextEntry('password', 'passwordConfirm', 'Confirm new password', 'passwordConfirm');
         
         ?>
-        <input type="submit" class="button" name="submit" value="changePassword"/>
+        <br><br><br>
+        <input type="submit" class="button" name="submit" value="Update Password"/>
+    </td>
+        </table>
     </form>
-    <a href="index.php">Back to Home</a>
 </body>
 
 </html>
