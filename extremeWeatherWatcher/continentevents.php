@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!-- shows weather events per selected continent -->
+
 <?php
 require_once("assets/initializer.php");
 include("assets/header.php");
@@ -35,6 +37,8 @@ mysqli_free_result($cont_result);
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>EWW - Weather Events in <?php echo $selectedCont; ?></title>
 </head>
@@ -42,13 +46,17 @@ mysqli_free_result($cont_result);
 <body>
     <div class="events-container generic-event-container">
 
-        <h2> Extreme weather in <?php echo $selectedCont; ?></h2>
+        <?php if (!$invalidContinent) { ?>
+            <h2> Extreme weather in <?php echo $selectedCont; ?></h2>
 
-        <div id="eventTable ">
-            <?php
-            showEventBasedOnContinent($selectedCont, 10, 10);
-            ?>
-        </div>
+            <div id="eventTable ">
+                <?php
+                showEventBasedOnContinent($selectedCont, 10, 10);
+                ?>
+            </div>
+        <?php } else { ?>
+            <h2> Extreme weather in invalid continent</h2>
+        <?php } ?>
     </div>
 
 </body>

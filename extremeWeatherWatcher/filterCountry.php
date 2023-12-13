@@ -1,4 +1,6 @@
 <?php
+//used to filter events by country, used in all events.php
+
 require_once("assets/initializer.php");
 //If country name filter is used, show just those countries
 if (isset($_POST['filterCountryName'])) {

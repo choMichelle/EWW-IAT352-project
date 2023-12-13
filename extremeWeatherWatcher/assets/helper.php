@@ -1,4 +1,6 @@
 <?php
+// helpful functions used in various pages
+
 //create/update media table
 function updateMediaTable($versionNum)
 {
@@ -14,17 +16,21 @@ function updateMediaTable($versionNum)
 
     if (mysqli_num_rows($result) != 0) {
         $row = mysqli_fetch_assoc($result);
-        $currVersionNum = $row['tableVersion'];
+        $currVersionNum = $row['tableVersion']; //get the current table version in the db
 
+        //check if the version number set in code is greater than the db version
         if ($versionNum > $currVersionNum || $currVersionNum = null) {
+
             //delete all currently saved images from db table
             $query_delete = "DELETE FROM media where tableVersion=$currVersionNum";
             mysqli_query($db, $query_delete);
 
+            //save the images currently in the images folder
             saveImages($db, $versionNum);
         }
         mysqli_free_result($result);
     } else {
+        //save the images in the folder if there is no image data in the db
         saveImages($db, $versionNum);
     }
 }
@@ -33,12 +39,13 @@ function updateMediaTable($versionNum)
 function saveImages($db, $versionNum)
 {
     //prepare files to save
-    $dir = new DirectoryIterator("images/");
+    $dir = new DirectoryIterator("images/"); //new iterator to loop through folder
+
     foreach ($dir as $fileinfo) { //loop through all files in images/ directory
         if (!$fileinfo->isDot()) { //exclude directory items, . items, .. items
             $file = $fileinfo->getFilename(); //get the file
 
-            $fileName = pathinfo($file, PATHINFO_FILENAME);
+            $fileName = pathinfo($file, PATHINFO_FILENAME); //get file name w/o extension
             $filePath = "images/$file";
 
             $query = "INSERT INTO media 
@@ -115,22 +122,26 @@ function isInWatchlist($country)
     }
 }
 
-//The name says it all, used in event detail, disable button if country is already in the watchlist
+//creates the watchlist button used in event detail
+//disable button if country is already in the watchlist
 function makeWatchlistButton($eventCountry)
 {
     if (isset($_SESSION['userEmail']) && !isInWatchlist($eventCountry)) {
+        //if user is logged in and country is not in watchlist
         echo "<form class = \"watchlistForm\" action=\"watchlist.php\" method=\"post\">";
         echo "<input class=\"hidden\" type=\"hidden\" name=\"newWatchListCountryName\" value=\"$eventCountry\">";
         echo "<input type=\"submit\" class=\"button\" name=\"Add country to Watchlist\" value=\"Add country to Watchlist\">";
         echo "</form>";
     } else if (isset($_SESSION['userEmail'])) {
+        //if user is logged in and country is already in watchlist
         echo "<input type=\"submit\" class=\"deactivated-button\" name=\"Add country to Watchlist\" value=\"Country is already in watchlist\">";
     } else {
+        //if user is not logged in
         echo "<a class =\"deactivated-button\"> Log in to add this event's country to  watchlist.";
     }
 }
 
-//add country to db (watchlist)
+//add country to watchlist db
 function addItemToWatchList($country)
 {
     $db = $_SESSION['db'];
@@ -152,12 +163,16 @@ function makeCountryDropdown($label, $htmlID, $varname, $isPrefilled = false)
     $db = $_SESSION['db'];
     $query_all_countries = "SELECT DISTINCT location.country FROM location";
     $all_countries_result = mysqli_query($db, $query_all_countries);
+    
     if (!$all_countries_result) {
         die("query failed");
     }
+
     echo "<label class = \"filterCountry\"for=\"$htmlID\">$label:</label>";
     echo "<select id=\"$htmlID\" name=\"$varname\">";
-    echo "<option value=\"\"></option>";
+
+    //add filter options (countries)
+    echo "<option value=\"\"></option>"; //empty (no filter) option
     if (mysqli_num_rows($all_countries_result) != 0 && $isPrefilled == false) {
         while ($row = mysqli_fetch_assoc($all_countries_result)) {
             $selected = ((isset($_POST[$varname])) && ($_POST[$varname] == $row['country'])) ? 'selected' : '';
@@ -184,6 +199,7 @@ function generateDropdownItem()
         die("query failed");
     }
 
+    //add continent dropdown options
     if (mysqli_num_rows($all_cont_result) != 0) {
         while ($row = mysqli_fetch_assoc($all_cont_result)) {
             $currCont = $row['continent'];
@@ -216,7 +232,7 @@ function getEventLocation($db, $eventLocationID)
                 $eventCountry = $row['country'];
                 $eventState = $row['stateOrProvince'];
             }
-            $eventLocation = array("continent" => $eventContinent, "country" => $eventCountry, "state" => $eventState);
+            $eventLocation = array("continent" => $eventContinent, "country" => $eventCountry, "state" => $eventState); //create assoc. array w/ location details
         }
         mysqli_free_result($result);
         return $eventLocation;
@@ -255,10 +271,13 @@ function showWatchlistWithRemoveButton()
         echo "Error: Unable to prepare statement";
     }
 }
-//Get user name
+
+//Get username
 function showUsername()
 {
     $db = $_SESSION['db'];
+
+    //check if user is logged in before returning username
     if (isset($_SESSION['userEmail'])) {
         $query = "SELECT username FROM users WHERE userEmail = ?";
         $stmt = mysqli_prepare($db, $query);
@@ -276,6 +295,8 @@ function showUsername()
 function getUserCountry()
 {
     $db = $_SESSION['db'];
+
+    //check if user is logged in before returning country
     if (isset($_SESSION['userEmail'])) {
         $query = "SELECT country FROM users WHERE userEmail = ?";
         $stmt = mysqli_prepare($db, $query);
@@ -299,7 +320,7 @@ function generateEventPreview($queryResult, $count)
         if ($i % 2 == 0) {
             echo "<tr class = \"event-container-row\">";
         }
-        //Messy table layout, but hey it works
+
         // Display title, quick data, location, etc.
         echo "<td class = \"event-container\">";
         echo "<table class=\"event-header\">";
@@ -326,7 +347,7 @@ function generateEventPreview($queryResult, $count)
         echo "<table>";
 
         echo "<tr class = \"content-row\">";
-        // Display a preview of the description (e.g., first 100 characters)
+        
         echo "<td>";
         echo "<div class=image-container>";
         if (!empty($row['mediaURL'])) {
@@ -335,9 +356,10 @@ function generateEventPreview($queryResult, $count)
             echo "<div class=monospace-text>No image</div>";
         }
 
-
         echo "</div>";
         echo "</td>";
+
+        // Display a preview of the description (e.g., first 250 characters)
         $descriptionPreview = substr($row['description'], 0, 250);
         echo "<td>" . $descriptionPreview . "... " . "<br><br><a class = \"button\" href=\"eventdetail.php?eventID=" . $row['eventID'] . "\">Read more</a>" . "</td>";
 
@@ -349,11 +371,13 @@ function generateEventPreview($queryResult, $count)
     echo "</table>";
 }
 
-//show specified number of weather events for a specific country
+//show specified number of weather events for a specific country (newest to oldest by date)
+//limit and start_from variables are used for pagination
+// - ensures next page shows records starting from where previous left off
 function showEventBasedOnCountries($country, $count, $limit, $start_from = 0)
 {
     $db = $_SESSION['db'];
-    //If $cuntry is empty, get $limit entries from any country. Else, get entries from specified country
+
     if (empty($country)) {
         $query = "SELECT weatherevents.*, location.*, media.* 
         FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID 
@@ -391,7 +415,7 @@ function showEventBasedOnCountries($country, $count, $limit, $start_from = 0)
     }
 }
 
-//show specified number of weather events for a specific continent, ordered from newest to oldest
+//show specified number of weather events for a specific continent, ordered from newest to oldest (date)
 //limit and start_from variables used for pagination
 function showEventBasedOnContinent($continent, $count, $limit, $start_from = 0)
 {
@@ -498,3 +522,5 @@ function getSpecificEventDetails($eventID)
         return mysqli_stmt_get_result($stmt);
     }
 }
+
+?>

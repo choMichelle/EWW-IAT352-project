@@ -11,10 +11,10 @@ body {
 
 .dropbtn{
 
-display: flex;
-align-items: center;
-justify-content: center;
-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 .nav-bar a, .dropbtn{
@@ -340,6 +340,10 @@ img {
     list-style-type: none;
     padding: 0 1rem;
     font-size: 1.5rem;
+}
+
+.page-numbers .active {
+    font-weight: bold;
 }
 
 h2 {

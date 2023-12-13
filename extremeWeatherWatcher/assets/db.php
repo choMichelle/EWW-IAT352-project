@@ -1,5 +1,5 @@
 <?php
-//TODO - consider creating a user account instead of using root (if needed)
+//db connection details
 $dbhost = "localhost";
 $dbuser = "root";
 $dbpass = "";
@@ -11,6 +11,6 @@ if (mysqli_connect_errno()) {
     echo "not connected" . mysqli_connect_error();
     exit;
 }
-$_SESSION['db'] = $db;
+$_SESSION['db'] = $db; //set the db for the session
 
 ?>

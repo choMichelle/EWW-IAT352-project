@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!-- shows all weather events in the db -->
+
 <?php
 require_once("assets/initializer.php");
 include("assets/header.php");
@@ -8,6 +10,7 @@ SSLtoHTTP();
 updateMediaTable(3);
 
 //get current page number
+//referenced: https://www.geeksforgeeks.org/php-pagination-set-2/
 if (isset($_GET['page'])) {
     $page_num = $_GET['page'];
 } else {
@@ -17,7 +20,7 @@ if (isset($_GET['page'])) {
 $limit = 10; //max number of events to show on page
 $start_from = ($page_num - 1) * $limit;
 
-//get number of records 
+//get number of records in db
 $sql = "SELECT COUNT(*) FROM weatherevents";
 $rs_result = mysqli_query($db, $sql);
 $row = mysqli_fetch_row($rs_result);
@@ -27,6 +30,8 @@ $total_records = $row[0];
 $total_pages = ceil($total_records / $limit);
 $page_link = "";
 
+//check if events are being filtered
+//get the name of the country being used to filtered if set
 if (isset($_POST['filterCountryName'])) $filterCountryName = $_POST['filterCountryName'];
 
 ?>
@@ -34,6 +39,8 @@ if (isset($_POST['filterCountryName'])) $filterCountryName = $_POST['filterCount
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>EWW - All Weather Events</title>
 </head>
@@ -53,7 +60,7 @@ if (isset($_POST['filterCountryName'])) $filterCountryName = $_POST['filterCount
 
     </div>
 
-
+    <!-- also referenced: https://www.geeksforgeeks.org/php-pagination-set-2/ -->
     <ul class="page-numbers">
         <?php
         if (!isset($_POST['filterCountryName']) || empty($_POST['filterCountryName'])) {

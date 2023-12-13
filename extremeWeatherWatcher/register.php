@@ -1,11 +1,13 @@
 <!DOCTYPE html>
+<!-- allows the user to register an account -->
+
 <?php
 require_once("assets/initializer.php");
 include("assets/header.php");
 
 require_SSL();
 
-//if already logged in, redirect
+//if already logged in, redirect to front page
 if (isset($_SESSION['userEmail'])) {
     header("Location: index.php");
 }
@@ -13,7 +15,9 @@ if (isset($_SESSION['userEmail'])) {
 $allInputValid = false;
 $errormsg = "";
 
-if (validateTextInput('username') && validateTextInput('userEmail') && validateTextInput('country') && validateTextInput('password') && validateTextInput('passwordConfirm')) {
+//check inputted text
+if (validateTextInput('username') && validateTextInput('userEmail') 
+    && validateTextInput('country') && validateTextInput('password') && validateTextInput('passwordConfirm')) {
     if (str_contains($_POST['userEmail'], "@") && str_contains($_POST['userEmail'], ".")) {
         if ($_POST['password'] == $_POST['passwordConfirm']) {
             $allInputValid = true;
@@ -27,7 +31,7 @@ if (validateTextInput('username') && validateTextInput('userEmail') && validateT
     $errormsg =  "Please fill in all fields.";
 }
 
-
+//when submit button is clicked
 if (!empty($_POST["submit"])) {
     if ($allInputValid) {
 
@@ -54,7 +58,7 @@ if (!empty($_POST["submit"])) {
                 mysqli_stmt_bind_param($insert_stmt, "ssss", $postedEmail, $username, $hashPassword, $userCountry);
                 $res = mysqli_stmt_execute($insert_stmt);
 
-                //if save successful, set session and redirect
+                //if save successful, set session and redirect to front page
                 if ($res) {
                     $_SESSION['userEmail'] = $postedEmail;
                     header("Location: index.php");
@@ -72,6 +76,8 @@ if (!empty($_POST["submit"])) {
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register account</title>
 </head>
 
@@ -81,16 +87,19 @@ if (!empty($_POST["submit"])) {
         <table>
             <td>
                 <?php
-                if (!empty($errormsg)) {
-                    echo "<div class=\"errormsg\"style=\"color: red;\"> $errormsg</div>";
-                }
-                makeTextEntry('text', 'username', 'Username', 'username');
-                makeTextEntry('text', 'email', 'Email', 'userEmail');
-                makeCountryDropdown("Your home country", "", "country");
-                makeTextEntry('password', 'password', 'Password', 'password');
-                makeTextEntry('password', 'passwordConfirm', 'Confirm password', 'passwordConfirm');
+                    if (!empty($errormsg)) {
+                        echo "<div class=\"errormsg\"style=\"color: red;\"> $errormsg</div>";
+                    }
+                    makeTextEntry('text', 'username', 'Username', 'username');
+                    makeTextEntry('text', 'email', 'Email', 'userEmail');
+                    makeCountryDropdown("Your home country", "", "country");
+                    makeTextEntry('password', 'password', 'Password', 'password');
+                    makeTextEntry('password', 'passwordConfirm', 'Confirm password', 'passwordConfirm');
                 ?>
-                <br><br><br><input type="submit" class="button" name="submit" />
+                <br>
+                <br>
+                <br>
+                <input type="submit" class="button" name="submit" />
             </td>
         </table>
     </form>

@@ -1,3 +1,5 @@
+// handles filtering weather events by country
+
 $(document).ready(function(){
     var selected = $("#filterCountry").val();
     console.log(selected);
@@ -35,7 +37,7 @@ $(document).ready(function(){
     });
 
     //Get paging data from URL to show data from page 2
-// https://stackoverflow.com/questions/53717122/how-to-write-regexp-to-get-a-paramater-from-url
+    // https://stackoverflow.com/questions/53717122/how-to-write-regexp-to-get-a-paramater-from-url
     function getParameterByName(name) {
         var url = window.location.href;
         name = name.replace(/[\[\]]/g, "\\$&");

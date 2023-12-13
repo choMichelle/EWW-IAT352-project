@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!-- shows full details of one weather event -->
+
 <?php
 require_once("assets/initializer.php");
 include("assets/header.php");
@@ -70,17 +72,17 @@ mysqli_free_result($result);
     <div>
         <?php echo "<h1>$eventTitle</h1>"; ?>
     </div>
-    <!-- Messy table layout, mostly for layout and styling, nothing special goes in here -->
+    
     <table class="event-detail-container">
         <tr>
             <td>
                 <div class="image-container">
                     <?php
-                    if (!empty($eventImage)) {
-                        echo "<img src=\"$eventImage\" />";
-                    } else {
-                        echo "<div class=\"monospace-text\">No image</div>";
-                    }
+                        if (!empty($eventImage)) {
+                            echo "<img src=\"$eventImage\" />";
+                        } else {
+                            echo "<div class=\"monospace-text\">No image</div>";
+                        }
                     ?>
                 </div>
             </td>
@@ -100,7 +102,6 @@ mysqli_free_result($result);
                             <table class="location-container">
                                 <td><?php echo "State: $eventState" ?></td>
                                 <td><?php echo "Continent: $eventContinent" ?></td>
-
                             </table>
                         </td>
                     </tr>
@@ -122,7 +123,6 @@ mysqli_free_result($result);
             </td>
         </tr>
     </table>
-
 
 
 </body>
