@@ -12,7 +12,6 @@ if (!empty($_POST['submit'])) {
     if (validateTextInput('userEmail') && validateTextInput('password')) {
         $inputEmail = $_POST['userEmail'];
         $hash_pass = sha1($_POST['password']);
-
         $query_accounts = "SELECT hashedPassword FROM `users` WHERE userEmail = ?";
         $stmt_accounts = mysqli_prepare($db, $query_accounts);
         mysqli_stmt_bind_param($stmt_accounts, "s", $inputEmail);
@@ -26,7 +25,8 @@ if (!empty($_POST['submit'])) {
                     $_SESSION['userEmail'] = $inputEmail;
                     header("Location: index.php");
                 }
-                
+                mysqli_stmt_close($stmt_accounts);
+                mysqli_free_result($result);
             }
             
         }

@@ -154,7 +154,7 @@ function makeCountryDropdown($label,$htmlID,$varname,$isPrefilled = false){
     if (!$all_countries_result) {
         die("query failed");
     }
-    echo "<label class = \"filterCountryLabel\"for=\"$htmlID\">$label:</label>";
+    echo "<label class = \"filterCountry\"for=\"$htmlID\">$label:</label>";
     echo "<select id=\"$htmlID\" name=\"$varname\">";
     echo "<option value=\"\"></option>";
     if(mysqli_num_rows($all_countries_result) != 0 && $isPrefilled == false){
