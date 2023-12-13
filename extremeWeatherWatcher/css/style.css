@@ -343,8 +343,12 @@ img {
 }
 
 h2 {
-    font-size: 2rem;
+    color: #fff;
+    font-size: 1.5rem;
+    background-color: #7c7c7c;
+    padding:1rem;
     padding-left: 2rem;
+    margin-left: 2rem;
 }
 
 #filterCountry {
