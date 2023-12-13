@@ -78,7 +78,7 @@ if (isset($_POST['submit']) && ($_POST['submit'] == "Update Password")) {
 
 
 
-mysqli_stmt_close($userStmt);
+
 ?>
 
 <!DOCTYPE html>
