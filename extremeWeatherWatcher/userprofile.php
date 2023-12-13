@@ -1,18 +1,119 @@
-<!DOCTYPE html>
 <?php
 require_once("assets/initializer.php");
 include("assets/header.php");
 
 SSLtoHTTP();
 
-//place to change user info (excl. email)
+if (!isset($_SESSION['userEmail'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$errormsg = "";
+
+$userQuery = "SELECT username, country, hashedPassword FROM users WHERE userEmail = ?";
+$userStmt = mysqli_prepare($db, $userQuery);
+mysqli_stmt_bind_param($userStmt, "s", $_SESSION['userEmail']);
+mysqli_stmt_execute($userStmt);
+$userResult = mysqli_stmt_get_result($userStmt);
+
+if ($row = mysqli_fetch_assoc($userResult)) {
+    $username = $row['username'];
+    $country = $row['country'];
+    $hashedPassword = $row['hashedPassword'];
+} else {
+    header("Location: login.php");
+    exit();
+}
+
+if (isset($_POST['submit']) && ($_POST['submit'] == "changeInfo")) {
+    if (validateTextInput('username') && validateTextInput('country')) {
+        echo "bunga";
+        $username = $_POST['username'];
+        $country = $_POST['country'];
+
+        $updateQuery = "UPDATE users SET username = ?, country = ? WHERE userEmail = ?";
+        $stmt = mysqli_prepare($db, $updateQuery);
+        mysqli_stmt_bind_param($stmt, "sss", $username, $country, $_SESSION['userEmail']);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    } else {
+        $errormsg = "Fields can't be empty";
+    }
+}
+
+if (isset($_POST['submit']) && ($_POST['submit'] == "changePassword")) {
+    if (validateTextInput('password') && validateTextInput('passwordConfirm') && validateTextInput('newpassword')) {
+
+        echo "\nold: $hashedPassword";
+        echo "<br>";
+        echo "\noldenter:" . sha1($_POST['password']);
+        if (sha1($_POST['password']) == $hashedPassword){
+            if($_POST['passwordConfirm'] == $_POST['newpassword'])
+            {
+                echo "pass";
+                $newPassword = sha1($_POST['newpassword']);
+                $updateQuery = "UPDATE users SET hashedPassword = ? WHERE userEmail = ?";
+                $stmt = mysqli_prepare($db, $updateQuery);
+                mysqli_stmt_bind_param($stmt, "ss", $newPassword, $_SESSION['userEmail']);
+                mysqli_stmt_execute($stmt);
+                $errormsg = "";
+                //heehehehehehehe
+                echo '<script type="text/javascript">alert("Update password success");</script>';
+                unset($_POST['newpassword']);
+                unset($_POST['password']);
+                unset($_POST['passwordConfirm']);
+                mysqli_stmt_close($stmt);
+            }
+            else{
+                $errormsg = "New password confirmation error";
+            }
+        }
+        else{
+            $errormsg = "Wrong password";
+        }
+
+
+    } else {
+        $errormsg = "Fields can't be empty";
+    }
+}
+
+
+
+mysqli_stmt_close($userStmt);
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
-    <head>
 
-    </head>
-    <body>
+<head>
+    <title>User Profile</title>
+    <!-- Add your stylesheets or link to external stylesheets here -->
+</head>
 
-    </body>
+<body>
+    <h2>Edit Profile</h2>
+    <?php if (!empty($errormsg)) : ?>
+        <div class="errormsg" style="color: red;"><?php echo $errormsg; ?></div>
+    <?php endif; ?>
+    <form action="userprofile.php" method="POST">
+        <h3>Change user info</h3>
+        <?php
+        makeTextEntry('text','username',"Username",'username',true);
+        makeCountryDropdown("Your home country","","country",true);
+        ?>
+        <input type="submit" name="submit" value="changeInfo"/>
+        <h3>Change password</h3>
+        <?php
+        makeTextEntry('password', 'password', 'Old Password', 'password');
+        makeTextEntry('password', 'password', 'New Password', 'newpassword');
+        makeTextEntry('password', 'passwordConfirm', 'Confirm new password', 'passwordConfirm');
+        
+        ?>
+        <input type="submit" name="submit" value="changePassword"/>
+    </form>
+    <a href="index.php">Back to Home</a>
+</body>
+
 </html>

@@ -74,12 +74,17 @@ function validateTextInput($inputName) {
 }
 
 //create form field
-function makeTextEntry($type, $label, $text, $varname) {
+function makeTextEntry($type, $label, $text, $varname,$isPrefilled=false) {
     echo "<label for=\"$label\">$text:</label>";
     echo "<input type=\"$type\" id=\"$varname\" name=\"$varname\"";
-    
-    if (isset($_POST[$varname]) && ($_POST[$varname] != "/") && !empty($_POST[$varname])) {
-        echo "value=$_POST[$varname]";
+    if($isPrefilled == false){
+        if (isset($_POST[$varname]) && ($_POST[$varname] != "/") && !empty($_POST[$varname])) {
+            echo "value=$_POST[$varname]";
+        }
+    }
+    else{
+        global $$varname;
+        echo "value=".$$varname;
     }
     
     echo " />";
@@ -129,7 +134,7 @@ function addItemToWatchList($country){
 }
 
 //creates country dropdown list for filtering
-function makeCountryDropdown($label,$htmlID,$varname){
+function makeCountryDropdown($label,$htmlID,$varname,$isPrefilled = false){
     $db = $_SESSION['db'];
     $query_all_countries = "SELECT DISTINCT location.country FROM location";
     $all_countries_result = mysqli_query($db,$query_all_countries);
@@ -139,14 +144,24 @@ function makeCountryDropdown($label,$htmlID,$varname){
     echo "<label for=\"$htmlID\">$label:</label>";
     echo "<select id=\"$htmlID\" name=\"$varname\">";
     echo "<option value=\"\"></option>";
-    if(mysqli_num_rows($all_countries_result) != 0){
+    if(mysqli_num_rows($all_countries_result) != 0 && $isPrefilled == false){
         while($row = mysqli_fetch_assoc($all_countries_result)){
             $selected = ((isset($_POST[$varname])) && ($_POST[$varname] == $row['country'])) ? 'selected' : '';
             echo "<option value='{$row['country']}' $selected>{$row['country']}</option>";
+
         }
+    }
+    else{
+        global $$varname;
+        while($row = mysqli_fetch_assoc($all_countries_result)){
+            $selected = ((isset($$varname)) && ($$varname == $row['country'])) ? 'selected' : '';
+            echo "<option value='{$row['country']}' $selected>{$row['country']}</option>";
+        }
+
     }
     echo "</select>";
     mysqli_free_result($all_countries_result);
+
 }
 
 //for header's "Event by continent"

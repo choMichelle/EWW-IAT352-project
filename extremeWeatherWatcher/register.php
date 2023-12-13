@@ -87,7 +87,7 @@ if (!empty($_POST["submit"])) {
         <?php 
             makeTextEntry('text', 'username', 'Username', 'username');
             makeTextEntry('text', 'email', 'Email', 'userEmail');
-            makeCountryDropdown("Your home country","filterCountry","country");
+            makeCountryDropdown("Your home country","","country");
             makeTextEntry('password', 'password', 'Password', 'password');
             makeTextEntry('password', 'passwordConfirm', 'Confirm password', 'passwordConfirm'); 
         ?>

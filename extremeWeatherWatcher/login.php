@@ -59,7 +59,8 @@ if (!empty($_POST['submit'])) {
             <input type="password" id="password" name="password" />
 
             <input type="submit" name="submit"/>
+            <a href="register.php"><div>Register here</div></a>
         </form>
-        <a href="register.php"><div>Register here</div></a>
+        
     </body>
 </html>

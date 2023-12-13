@@ -21,7 +21,7 @@
                 if(isset($_SESSION['userEmail'])) {
                     echo "<a href=\"watchlist.php\"><div class=\"nav-button\">Show my Watchlist</div></a>";
 
-                    echo "<a href=\"userprofile.php\"><div class=\"nav-button\">Your Profile</div></a>";
+                    echo "<a href=\"userprofile.php\"><div class=\"nav-button\">Edit Profile</div></a>";
                 }
                 
             ?>
