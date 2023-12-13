@@ -9,7 +9,7 @@ updateMediaTable(3);
 
 $invalidContinent = true;
 
-if(isset($_GET["continent"])) $eventCountry = $_GET["continent"];
+if (isset($_GET["continent"])) $eventCountry = $_GET["continent"];
 
 //query to check if continent exists in db
 $query_continents = "SELECT continent FROM `location`";
@@ -33,23 +33,26 @@ mysqli_free_result($cont_result);
 ?>
 
 <html lang="en">
-    <head>
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-        <title>EWW - Weather Events in <?php echo $selectedCont; ?></title>
-    </head>
-    <body>
-        <div class="events-container generic-event-container">
-            
-            <h2> Extreme weather in <?php echo $selectedCont; ?></h2>
 
-            <div id="eventTable ">
-                <?php
-                showEventBasedOnContinent($selectedCont, 10, 10); 
-                ?>
-            </div>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>EWW - Weather Events in <?php echo $selectedCont; ?></title>
+</head>
+
+<body>
+    <div class="events-container generic-event-container">
+
+        <h2> Extreme weather in <?php echo $selectedCont; ?></h2>
+
+        <div id="eventTable ">
+            <?php
+            showEventBasedOnContinent($selectedCont, 10, 10);
+            ?>
         </div>
-        
-    </body>
-    <?php $db->close(); ?>
-    <script src = "js/locationFilter.js" defer></script> 
+    </div>
+
+</body>
+<?php $db->close(); ?>
+<script src="js/locationFilter.js" defer></script>
+
 </html>

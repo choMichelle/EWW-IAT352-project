@@ -17,16 +17,13 @@ if (validateTextInput('username') && validateTextInput('userEmail') && validateT
     if (str_contains($_POST['userEmail'], "@") && str_contains($_POST['userEmail'], ".")) {
         if ($_POST['password'] == $_POST['passwordConfirm']) {
             $allInputValid = true;
-        }
-        else {
+        } else {
             $errormsg = "Passwords do not match.";
         }
-    }
-    else {
+    } else {
         $errormsg = "Email format requires: @ and a .domain";
     }
-}
-else {
+} else {
     $errormsg =  "Please fill in all fields.";
 }
 
@@ -45,59 +42,59 @@ if (!empty($_POST["submit"])) {
             $row = mysqli_fetch_assoc($emails_result);
             if ($row['count'] > 0) {
                 $errormsg = "An account already exists for this email.";
-            }
-            else {
+            } else {
                 $postedEmail = $_POST['userEmail'];
                 $username = $_POST['username'];
                 $hashPassword = sha1($_POST['password']);
                 $userCountry = ucfirst(strtolower($_POST['country']));
-    
+
                 //save user data into the db
                 $insert_query = "INSERT INTO users (userEmail, username, hashedPassword, country) VALUES (?,?,?,?)";
                 $insert_stmt = mysqli_prepare($db, $insert_query);
                 mysqli_stmt_bind_param($insert_stmt, "ssss", $postedEmail, $username, $hashPassword, $userCountry);
                 $res = mysqli_stmt_execute($insert_stmt);
-    
+
                 //if save successful, set session and redirect
                 if ($res) {
                     $_SESSION['userEmail'] = $postedEmail;
                     header("Location: index.php");
                     exit;
-                }
-                else {
+                } else {
                     $errormsg = "unable to add user";
                 }
             }
         }
-          
     }
 }
 
 ?>
 
 <html lang="en">
+
 <head>
     <title>Register account</title>
 </head>
+
 <body>
     <h1>Register</h1>
-    <form class= "standalone-form-1-col" action="register.php" method="POST">
+    <form class="standalone-form-1-col" action="register.php" method="POST">
         <table>
             <td>
-        <?php 
-        if (!empty($errormsg)){
-            echo "<div class=\"errormsg\"style=\"color: red;\"> $errormsg</div>";
-        }
-            makeTextEntry('text', 'username', 'Username', 'username');
-            makeTextEntry('text', 'email', 'Email', 'userEmail');
-            makeCountryDropdown("Your home country","","country");
-            makeTextEntry('password', 'password', 'Password', 'password');
-            makeTextEntry('password', 'passwordConfirm', 'Confirm password', 'passwordConfirm'); 
-        ?>
-        <br><br><br><input type="submit" class="button" name="submit"/>
-</td>
-</table>
+                <?php
+                if (!empty($errormsg)) {
+                    echo "<div class=\"errormsg\"style=\"color: red;\"> $errormsg</div>";
+                }
+                makeTextEntry('text', 'username', 'Username', 'username');
+                makeTextEntry('text', 'email', 'Email', 'userEmail');
+                makeCountryDropdown("Your home country", "", "country");
+                makeTextEntry('password', 'password', 'Password', 'password');
+                makeTextEntry('password', 'passwordConfirm', 'Confirm password', 'passwordConfirm');
+                ?>
+                <br><br><br><input type="submit" class="button" name="submit" />
+            </td>
+        </table>
     </form>
-    
+
 </body>
+
 </html>

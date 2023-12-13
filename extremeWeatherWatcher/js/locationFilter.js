@@ -1,28 +1,23 @@
 $(document).ready(function(){
     var selected = $("#filterCountry").val();
     console.log(selected);
-    // paging_sql = "SELECT weatherevents.*, location.*, media.*  FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID ORDER BY weatherevents.date DESC LIMIT 0,10"
 
+    //immediately show the first 10 entries when page load
     $.ajax({
         url: 'filterCountry.php',
         type: 'post',
         data: { filterCountryName: selected, page: getParameterByName('page') },
         success: function(response) {
-            
             $("#resultContainer").html(response);
         },
-        error: function(xhr, status, error) {
-            console.error("Error: " + error);
-        }
+
     });
 
 
-
-
+    //When filter bar changes, show the appropiate countries and hide the page number
     $("#filterCountry").on("change", function() {
         var selected = $(this).val();
         console.log(selected);
-        // paging_sql = "SELECT weatherevents.*, location.*, media.* FROM weatherevents JOIN `location` ON weatherevents.locationID = location.locationID LEFT JOIN `mediainevent` ON weatherevents.eventID = mediainevent.eventID LEFT JOIN `media` ON mediainevent.mediaID = media.mediaID WHERE location.country = ? ORDER BY weatherevents.date DESC"
 
         $.ajax({
             url: 'filterCountry.php',
@@ -35,13 +30,11 @@ $(document).ready(function(){
                 } else {
                     $(".page-numbers").show();
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error("Error: " + error);
-            }
-            
+            },            
         });
     });
+
+    //Get paging data from URL to show data from page 2
 // https://stackoverflow.com/questions/53717122/how-to-write-regexp-to-get-a-paramater-from-url
     function getParameterByName(name) {
         var url = window.location.href;

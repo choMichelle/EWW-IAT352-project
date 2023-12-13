@@ -10,7 +10,7 @@ if (!isset($_SESSION['userEmail'])) {
 }
 
 $errormsg = "";
-
+//Get user information from database
 $userQuery = "SELECT username, country, hashedPassword FROM users WHERE userEmail = ?";
 $userStmt = mysqli_prepare($db, $userQuery);
 mysqli_stmt_bind_param($userStmt, "s", $_SESSION['userEmail']);
@@ -25,7 +25,11 @@ if ($row = mysqli_fetch_assoc($userResult)) {
     header("Location: login.php");
     exit();
 }
+mysqli_free_result($userResult);
+mysqli_stmt_close($userStmt);
 
+
+//If pressed on update profile, check for missing field. If there is no missing field, update database with new information
 if (isset($_POST['submit']) && ($_POST['submit'] == "Update Profile")) {
     if (validateTextInput('username') && validateTextInput('country')) {
         $username = $_POST['username'];
@@ -41,12 +45,12 @@ if (isset($_POST['submit']) && ($_POST['submit'] == "Update Profile")) {
     }
 }
 
+//If pressed on update password, check for old password, then check whether new pass matches with confirm pass. Then update database with new password
 if (isset($_POST['submit']) && ($_POST['submit'] == "Update Password")) {
     if (validateTextInput('password') && validateTextInput('passwordConfirm') && validateTextInput('newpassword')) {
 
-        if (sha1($_POST['password']) == $hashedPassword){
-            if($_POST['passwordConfirm'] == $_POST['newpassword'])
-            {
+        if (sha1($_POST['password']) == $hashedPassword) {
+            if ($_POST['passwordConfirm'] == $_POST['newpassword']) {
                 echo "pass";
                 $newPassword = sha1($_POST['newpassword']);
                 $updateQuery = "UPDATE users SET hashedPassword = ? WHERE userEmail = ?";
@@ -60,16 +64,12 @@ if (isset($_POST['submit']) && ($_POST['submit'] == "Update Password")) {
                 unset($_POST['password']);
                 unset($_POST['passwordConfirm']);
                 mysqli_stmt_close($stmt);
-            }
-            else{
+            } else {
                 $errormsg = "New password confirmation error";
             }
-        }
-        else{
+        } else {
             $errormsg = "Wrong password";
         }
-
-
     } else {
         $errormsg = "Fields can't be empty";
     }
@@ -85,7 +85,6 @@ mysqli_stmt_close($userStmt);
 
 <head>
     <title>User Profile</title>
-    <!-- Add your stylesheets or link to external stylesheets here -->
 </head>
 
 <body>
@@ -93,31 +92,31 @@ mysqli_stmt_close($userStmt);
     <?php if (!empty($errormsg)) : ?>
         <div class="errormsg" style="color: red;"><?php echo $errormsg; ?></div>
     <?php endif; ?>
-    <form class= "standalone-form" action="userprofile.php" method="POST">
-        
+    <form class="standalone-form" action="userprofile.php" method="POST">
+
         <table>
-        <td>
-        <h3>Change user info</h3>
-        <?php
+            <td>
+                <h3>Change user info</h3>
+                <?php
 
-        makeTextEntry('text','username',"Username",'username',true);
-        makeCountryDropdown("Your home country","","country",true);
-        ?>
-        <br><br><br><br><br>
-        <input type="submit" class="button" name="submit" value="Update Profile"/>
-    </td>
+                makeTextEntry('text', 'username', "Username", 'username', true);
+                makeCountryDropdown("Your home country", "", "country", true);
+                ?>
+                <br><br><br><br><br>
+                <input type="submit" class="button" name="submit" value="Update Profile" />
+            </td>
 
-        <td>
-        <h3>Change password</h3>
-        <?php
-        makeTextEntry('password', 'password', 'Old Password', 'password');
-        makeTextEntry('password', 'password', 'New Password', 'newpassword');
-        makeTextEntry('password', 'passwordConfirm', 'Confirm new password', 'passwordConfirm');
-        
-        ?>
-        <br><br><br>
-        <input type="submit" class="button" name="submit" value="Update Password"/>
-    </td>
+            <td>
+                <h3>Change password</h3>
+                <?php
+                makeTextEntry('password', 'password', 'Old Password', 'password');
+                makeTextEntry('password', 'password', 'New Password', 'newpassword');
+                makeTextEntry('password', 'passwordConfirm', 'Confirm new password', 'passwordConfirm');
+
+                ?>
+                <br><br><br>
+                <input type="submit" class="button" name="submit" value="Update Password" />
+            </td>
         </table>
     </form>
 </body>

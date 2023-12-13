@@ -8,6 +8,7 @@
         <div class="nav-bar">
         <a id="logo" href="index.php">
         <div class="nav-button">
+            <!-- Display different message whether the user logged in or not  -->
             <span style="font-size: 3rem;">E</span>xtreme <span style="font-size: 3rem;">W</span>eather <span style="font-size: 3rem;">W</span>atcher
             <br>
             <div class="welcome">
@@ -34,7 +35,7 @@
                 }
                 
             ?>
-
+<!-- Display different message whether the user logged in or not  -->
             <?php
                 if (isset($_SESSION['userEmail'])) {
     

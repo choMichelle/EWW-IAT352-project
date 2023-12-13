@@ -9,7 +9,7 @@ updateMediaTable(3);
 
 $invalidID = true;
 
-if(isset($_GET["eventID"])) $eventID = $_GET["eventID"];
+if (isset($_GET["eventID"])) $eventID = $_GET["eventID"];
 
 //query to check if eventID exists in the db
 $query_weather_eventID = "SELECT eventID FROM weatherevents";
@@ -33,13 +33,12 @@ mysqli_free_result($weather_eventID_result);
 if ($invalidID) {
     echo "Event not found.";
     exit;
-}
-else {
+} else {
 
     $result = getSpecificEventDetails($eventID);
 
-    if(mysqli_num_rows($result) != 0){
-        while ($row = mysqli_fetch_assoc($result)){
+    if (mysqli_num_rows($result) != 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
             $eventID = $row['eventID'];
             $eventDate = $row['date'];
             $eventDesc = $row['description'];
@@ -60,70 +59,73 @@ mysqli_free_result($result);
 
 
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Detail</title>
 </head>
+
 <body>
-<div>
-    <?php echo "<h1>$eventTitle</h1>"; ?>
-</div>
-<table class="event-detail-container">
-    <tr>
-        <td>
-            <div class="image-container">
-                <?php
-                if (!empty($eventImage)) {
-                    echo "<img src=\"$eventImage\" />";
-                } else {
-                    echo "<div class=\"monospace-text\">No image</div>";
-                }
-                ?>
-            </div>
-        </td>
-        <td>
-            <table>
-                <tr>
-                    <td class = "bold-text"><?php echo "Event type: $eventType"; ?></td>
-                </tr>
-                <tr>
-                    <td class = "bold-text"><?php echo "Event severity: $eventSeverity"; ?></td>
-                </tr>
-                <tr>
-                    <td class = "bold-text"><?php echo "Event date: $eventDate"; ?></td>
-                </tr>
-                <!-- Need to fix locationID -->
-                <tr>
-                    <td>
-                    <table class = "location-container">
-                        <td><?php echo "State: $eventState"?></td>
-                        <td><?php echo "Continent: $eventContinent"?></td>
-                       
-                    </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table class = "location-container">
-                        <td><?php echo "Country: $eventCountry"?></td>
-                        <td><?php makeWatchlistButton($eventCountry);?></td>
-                        </table>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <div><?php echo $eventDesc; ?></div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
+    <div>
+        <?php echo "<h1>$eventTitle</h1>"; ?>
+    </div>
+    <!-- Messy table layout, mostly for layout and styling, nothing special goes in here -->
+    <table class="event-detail-container">
+        <tr>
+            <td>
+                <div class="image-container">
+                    <?php
+                    if (!empty($eventImage)) {
+                        echo "<img src=\"$eventImage\" />";
+                    } else {
+                        echo "<div class=\"monospace-text\">No image</div>";
+                    }
+                    ?>
+                </div>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="bold-text"><?php echo "Event type: $eventType"; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="bold-text"><?php echo "Event severity: $eventSeverity"; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="bold-text"><?php echo "Event date: $eventDate"; ?></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="location-container">
+                                <td><?php echo "State: $eventState" ?></td>
+                                <td><?php echo "Continent: $eventContinent" ?></td>
+
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="location-container">
+                                <td><?php echo "Country: $eventCountry" ?></td>
+                                <td><?php makeWatchlistButton($eventCountry); ?></td>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div><?php echo $eventDesc; ?></div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 
 
-    
+
 </body>
 <?php $db->close(); ?>
+
 </html>
