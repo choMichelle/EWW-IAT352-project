@@ -66,38 +66,62 @@ mysqli_free_result($result);
     <title>Event Detail</title>
 </head>
 <body>
-    <div><?php echo "<h1>$eventTitle</h1>"; ?></div>
-    <div class=image-container>
-        <?php
-            if (!empty($eventImage)) {
-                echo "<img src=\"" . $eventImage . "\" />";
-            } else {
-                echo "<div class=monospace-text>No image</div>";
-            }
-        ?>        
-    </div>
-    <div><?php echo "Event type: $eventType"; ?></div>
-    <div><?php echo "Event severity: $eventSeverity"; ?></div>
-    <div><?php echo "Event date: $eventDate"; ?></div>
-    <!-- Need to fix locationID -->
-    <div><?php echo "Event location: $eventState, $eventCountry, $eventContinent"?></div>
-    <div>
-        <?php
-        if (isset($_SESSION['userEmail']) && !isInWatchlist($eventCountry)) {
-            echo "<form action=\"watchlist.php\" method=\"post\">";
-            echo "<input type = \"hidden\" name=\"newWatchListCountryName\" value=\"$eventCountry\">";
-            echo "<input type=\"submit\" name=\Add country to Watchlist\ value=\"Add country to Watchlist\">";
-            echo "</form>";
-        }
-        else if (isset($_SESSION['userEmail'])) {
-            echo "The country of this event is already in your watchlist";
-        }
-        else {
-            echo "Log in to add this event's country to your watchlist.";
-        }
-        ?>
-    </div>
-    <div><?php echo $eventDesc; ?></div>
+<div>
+    <?php echo "<h1>$eventTitle</h1>"; ?>
+</div>
+<table class="event-detail-container">
+    <tr>
+        <td>
+            <div class="image-container">
+                <?php
+                if (!empty($eventImage)) {
+                    echo "<img src=\"$eventImage\" />";
+                } else {
+                    echo "<div class=\"monospace-text\">No image</div>";
+                }
+                ?>
+            </div>
+        </td>
+        <td>
+            <table>
+                <tr>
+                    <td><?php echo "Event type: $eventType"; ?></td>
+                </tr>
+                <tr>
+                    <td><?php echo "Event severity: $eventSeverity"; ?></td>
+                </tr>
+                <tr>
+                    <td><?php echo "Event date: $eventDate"; ?></td>
+                </tr>
+                <!-- Need to fix locationID -->
+                <tr>
+                    <td>
+                    <table>
+                        <td><?php echo "State: $eventState"?></td>
+                        <td><?php echo "Continent: $eventContinent"?></td>
+                       
+                    </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                        <td><?php echo "Country: $eventCountry"?></td>
+                        <td><?php makeWatchlistButton($eventCountry);?></td>
+                        </table>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                        <div><?php echo $eventDesc; ?></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
 
     
 </body>

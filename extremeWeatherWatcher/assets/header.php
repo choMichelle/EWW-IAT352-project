@@ -6,7 +6,16 @@
     </head>
     <body>
         <div class="nav-bar">
-            <a href="index.php"><div class="nav-button">Extreme Weather Watcher</div></a>
+        <a id="logo" href="index.php">
+        <div class="nav-button">
+            <span style="font-size: 3rem;">E</span>xtreme <span style="font-size: 3rem;">W</span>eather <span style="font-size: 3rem;">W</span>atcher
+            <br>
+            <div class="welcome">
+            <?php if (isset($_SESSION['userEmail'])) { echo "Welcome back,  <span class=\"username\">". showUsername(). "</span>"; }?>
+            </div>
+        </div>
+        </a>
+
 
             <a href="allevents.php"><div class="nav-button">Show All Events</div></a> 
 
@@ -28,6 +37,7 @@
 
             <?php
                 if (isset($_SESSION['userEmail'])) {
+    
                     echo "<a href=\"assets/logout.php\"><div class=\"nav-button\">Log out</div></a>";
                 }
                 else {

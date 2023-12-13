@@ -58,7 +58,7 @@ if (!empty($_POST['submit'])) {
             <label for="password">Password: </label>
             <input type="password" id="password" name="password" />
 
-            <input type="submit" name="submit"/>
+            <input type="submit" class="button" name="submit"/>
             <a href="register.php"><div>Register here</div></a>
         </form>
         

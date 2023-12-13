@@ -117,6 +117,19 @@ function isInWatchlist($country){
     }
 }
 
+function makeWatchlistButton($eventCountry){
+    if (isset($_SESSION['userEmail']) && !isInWatchlist($eventCountry)) {
+        echo "<form class = \"watchlistForm\" action=\"watchlist.php\" method=\"post\">";
+        echo "<input class=\"hidden\" type=\"hidden\" name=\"newWatchListCountryName\" value=\"$eventCountry\">";
+        echo "<input type=\"submit\" class=\"button\" name=\"Add country to Watchlist\" value=\"Add country to Watchlist\">";
+        echo "</form>";
+    } else if (isset($_SESSION['userEmail'])) {
+        echo "The country of this event is already in your watchlist";
+    } else {
+        echo "Log in to add this event's country to your watchlist.";
+    }
+}
+
 //add country to db (watchlist)
 function addItemToWatchList($country){
     $db = $_SESSION['db'];
@@ -234,25 +247,32 @@ function showWatchlistWithRemoveButton(){
     $db = $_SESSION['db'];
     $query_all_countries = "SELECT DISTINCT country FROM watchlist WHERE userEmail = ?";
     $stmt = mysqli_prepare($db, $query_all_countries);
-   
+    
     if ($stmt) {
         mysqli_stmt_bind_param($stmt, "s", $_SESSION['userEmail']);
-        mysqli_stmt_execute($stmt);    
+        mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-            while ($country = mysqli_fetch_assoc($result)) {
-                echo "<li id=\"". str_replace(' ', '_', $country['country']) . "\" data-country=\"" . str_replace(' ', '_', $country['country']) . "\">";
-                echo htmlspecialchars($country['country']);
-                echo "<a class=\"removeButton\">Remove</a>";
-                echo "</li>";
-            }
-            mysqli_stmt_free_result($stmt);
-            mysqli_stmt_close($stmt);   
+    
+        echo "<table class=\"watchlist-container\">";
+        echo "<tbody>";
+    
+        while ($country = mysqli_fetch_assoc($result)) {
+            echo "<tr id=\"" . str_replace(' ', '_', $country['country']) . "\" data-country=\"" . str_replace(' ', '_', $country['country']) . "\">";
+            echo "<td>" . htmlspecialchars($country['country']) . "</td>";
+            echo "<td><a class=\"removeButton\">Remove</a></td>";
+            echo "</tr>";
         }
-    else {
+    
+        echo "</tbody>";
+        echo "</table>";
+    
+        mysqli_stmt_free_result($stmt);
+        mysqli_stmt_close($stmt);
+    } else {
         echo "Error: Unable to prepare statement";
     }
+    
 }
-
 //retrieves and shows a welcome text w/ the user's username
 function showUsername(){
     $db = $_SESSION['db'];
@@ -263,9 +283,9 @@ function showUsername(){
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $username = mysqli_fetch_assoc($result);
-        echo "Welcome " . $username['username'];
         mysqli_stmt_free_result($stmt);
         mysqli_stmt_close($stmt);
+        return $username['username'];
     }
 }
 

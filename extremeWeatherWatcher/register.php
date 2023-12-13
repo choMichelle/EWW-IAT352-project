@@ -91,7 +91,7 @@ if (!empty($_POST["submit"])) {
             makeTextEntry('password', 'password', 'Password', 'password');
             makeTextEntry('password', 'passwordConfirm', 'Confirm password', 'passwordConfirm'); 
         ?>
-        <input type="submit" name="submit"/>
+        <input type="submit" class="button" name="submit"/>
 
     </form>
     

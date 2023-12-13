@@ -20,7 +20,9 @@ SSLtoHTTP();
                     unset($_POST['newWatchListCountryName']);
                 }
             }
+            echo "<table>";
             showWatchlistWithRemoveButton();
+            echo "</table>";
         }
         else {
             $_SESSION['callback_url'] = 'watchlist.php';

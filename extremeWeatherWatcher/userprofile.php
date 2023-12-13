@@ -103,7 +103,7 @@ mysqli_stmt_close($userStmt);
         makeTextEntry('text','username',"Username",'username',true);
         makeCountryDropdown("Your home country","","country",true);
         ?>
-        <input type="submit" name="submit" value="changeInfo"/>
+        <input type="submit" class="button" name="submit" value="changeInfo"/>
         <h3>Change password</h3>
         <?php
         makeTextEntry('password', 'password', 'Old Password', 'password');
@@ -111,7 +111,7 @@ mysqli_stmt_close($userStmt);
         makeTextEntry('password', 'passwordConfirm', 'Confirm new password', 'passwordConfirm');
         
         ?>
-        <input type="submit" name="submit" value="changePassword"/>
+        <input type="submit" class="button" name="submit" value="changePassword"/>
     </form>
     <a href="index.php">Back to Home</a>
 </body>

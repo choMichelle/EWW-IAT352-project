@@ -6,13 +6,55 @@ body {
     background-color: #333;
     display: flex;
     justify-content: space-around;
+
+}
+
+.dropbtn{
+    display: block;
+    margin: auto;
+    padding-top: 1.6rem;
+}
+
+.nav-bar a, .dropbtn{
+    margin: auto;
+}
+
+#logo .nav-button{
+    color: #333333;
+    font-size: 0.5rem;
+    margin: auto;
+    justify-content: space-around;
+    
+}
+
+.username{
+    font-weight: 700;
+}
+
+.welcome {
+    font-size: 1rem;
+}
+
+#logo{
+    background-color: #f9f9f9;
+    margin: 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    text-decoration: none;
+}
+
+a .nav-button{
+    text-decoration: none;
 }
 
 .nav-button {
     padding: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     color: white;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 1.25rem;
+    font-weight: 700;
 }
 
 .nav-button:hover {
@@ -91,9 +133,7 @@ body {
 
 form {
     max-width: 400px;
-    margin: 50px auto;
     background-color: #fff;
-    padding: 20px;
 }
 
 label {
@@ -106,17 +146,24 @@ label {
 }
 
 
-input[type="submit"] {
-    margin-top: 10px;
-    display: block;
 
-}
-
-.removeButton{
+.removeButton, .button {
     font-size: 1rem;
-    text-decoration: underline;
+    text-decoration: none; /* Remove underline */
     cursor: pointer;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
 }
+
+.removeButton:hover, .button:hover {
+    background-color: #555;
+}
+
 
 
 /* new */
@@ -294,7 +341,7 @@ img {
 }
 
 h2 {
-    font-size: 3rem;
+    font-size: 2rem;
     padding-left: 2rem;
 }
 
@@ -304,4 +351,50 @@ h2 {
 
 label{
     margin-left: 2rem;
+}
+
+h1{
+    margin-top: 5rem;
+    text-align: center;
+}
+
+.hidden{
+    display: none;
+}
+
+.watchlistForm{
+    height: 2rem;
+}
+
+.event-detail-container{
+    margin: auto;
+    margin-top: 3rem;
+    max-width: 60vw;
+   
+}
+
+.watchlist-container{
+    margin: auto;
+    margin-top: 3rem;
+    max-width: 30vw;
+}
+
+.event-detail-container tr td:nth-child(1){
+    width: 40%;
+}
+
+.event-detail-container tr td:nth-child(2){
+    width: 60%;
+}
+
+.watchlist-container tr td:nth-child(1){
+    width: 75%;
+}
+
+.watchlist-container tr td:nth-child(2){
+    width: 25%;
+}
+
+.removeButton{
+
 }
